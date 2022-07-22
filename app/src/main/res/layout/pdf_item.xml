@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/pdf_name_pdf_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/poppinsbold"
+        android:textColor="?attr/textColorTheme"
+        android:textSize="24sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdf_name_pdf_item">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginLeft="12dp"
+            android:id="@+id/pdf_view_advance"
+            android:textColor="?attr/textColorTheme"
+            android:textSize="18sp"
+            android:text="@string/advanced_pdf_viewer"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:fontFamily="@font/poppinsbold"
+            android:id="@+id/pdf_view_basic"
+            android:textColor="?attr/textColorTheme"
+            android:textSize="18sp"
+            android:text="@string/basic_pdf_viewer"/>
+    </LinearLayout>
+
+</RelativeLayout>

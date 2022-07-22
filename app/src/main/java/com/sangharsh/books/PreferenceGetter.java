@@ -6,8 +6,6 @@ import android.preference.PreferenceManager;
 
 public class PreferenceGetter {
 
-    public static final String IS_DARK_MODE_ENABLED="is_dark_mode_enabled";
-    public static final String IS_MODE_SELECTED="is_mode_selected";
 
     Context context;
     SharedPreferences preferences;
@@ -20,7 +18,7 @@ public class PreferenceGetter {
     }
 
     public void putBoolean(String key, boolean b){
-        editor.putBoolean(key,b).apply();
+        editor.putBoolean(key,b).commit();
     }
 
     public boolean getBoolean(String key){

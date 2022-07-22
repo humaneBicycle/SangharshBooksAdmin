@@ -19,16 +19,30 @@
     <FrameLayout
         android:id="@+id/body_holder_main_activity"
         android:layout_width="match_parent"
+        android:background="?attr/backgroundColorTheme"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintTop_toBottomOf="@+id/greetings_holder" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/body_holder_main_activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_baseline_add_24"
+        android:layout_margin="16dp"
+        android:elevation="16dp"
+        android:id="@+id/add_home_admin"/>
 
 
     <me.ibrahimsn.lib.SmoothBottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:layout_margin="8dp"
+        app:iconTintActive="@color/greenPrimary"
         app:backgroundColor="?attr/backgroundColorTheme"
+        app:iconTint="?attr/textColorTheme"
         app:cornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

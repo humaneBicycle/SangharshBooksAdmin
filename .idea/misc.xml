@@ -3,10 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/drawable/default_gradient.xml" value="0.158" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/drawable/ic_bookmarks.xml" value="0.1565" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/drawable/ic_downloads.xml" value="0.1565" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/drawable/ic_home_icon.xml" value="0.1565" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/drawable/ic_profile.xml" value="0.1565" />
         <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/font/poppins.xml" value="0.2523076923076923" />
-        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/activity_main.xml" value="0.22604166666666667" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/activity_file.xml" value="0.19114583333333332" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/add_bottom_sheet.xml" value="0.209375" />
         <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/books_item.xml" value="0.225" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/fragment_bookmarks.xml" value="0.2359375" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/fragment_downloads.xml" value="0.2359375" />
         <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/fragment_greeting.xml" value="0.22604166666666667" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/fragment_home.xml" value="0.2359375" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/main_item.xml" value="0.25" />
+        <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/layout/pdf_item.xml" value="0.23489583333333333" />
         <entry key="..\:/Storage/code/Project 2/SangharshBooks/app/src/main/res/menu/bottom_nav.xml" value="0.2359375" />
       </map>
     </option>
