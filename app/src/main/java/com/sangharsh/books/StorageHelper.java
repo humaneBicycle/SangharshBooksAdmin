@@ -36,7 +36,11 @@ public class StorageHelper {
         Gson gson = new Gson();
         String json = prefs.getString(key, null);
         Type type = new TypeToken<ArrayList<PDFModel>>() {}.getType();
-        return gson.fromJson(json, type);
+        if(gson.fromJson(json, type)!=null){
+            return gson.fromJson(json, type);
+        }else{
+            return new ArrayList<>();
+        }
     }
 
 

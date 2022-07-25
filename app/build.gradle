@@ -50,4 +50,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.github.alexto9090:PRDownloader:1.0'
     implementation 'com.google.android.material:material:1.2.0-alpha02'
+
+    //pdf viewer
+    //implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation "com.dmitryborodin:pdfview-android:1.1.0"
+
+    //downloader library
+    //implementation 'com.mindorks.android:prdownloader:0.6.0'
 }

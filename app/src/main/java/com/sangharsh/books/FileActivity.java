@@ -2,51 +2,130 @@ package com.sangharsh.books;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.sangharsh.books.adapter.AddDirectoryBottomSheetAdapter;
 import com.sangharsh.books.adapter.DirectoryAdapter;
 import com.sangharsh.books.model.Directory;
 
-public class FileActivity extends AppCompatActivity {
-    Directory directory;
-    RecyclerView recyclerView;
+import java.util.ArrayList;
+
+public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag {
     ProgressBar progressBar;
+    TextView nothingAvailableTV, heading;
+    SangharshBooks sangharshBooks;
+    FloatingActionButton floatingActionButton;
+    Directory directory;
+    ArrayList<Directory> directories;
+    RecyclerView recyclerView;
+    DirectoryAdapter directoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sangharshBooks = (SangharshBooks)getApplication();
+        if(sangharshBooks.isDarkMode()){
+            setTheme(R.style.Theme_Dark);
+        }else{
+            setTheme(R.style.Theme_Light);
+        }
+
         setContentView(R.layout.activity_file);
 
+
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+
+
         progressBar = findViewById(R.id.progress_file_activity);
+        nothingAvailableTV = findViewById(R.id.text_nothing_available_file_activity);
+        floatingActionButton = findViewById(R.id.fab_file_activity);
+        heading = findViewById(R.id.file_activity_heading);
 
-        String firebaseDocumentID = getIntent().getStringExtra("id");
+        heading.setText(sangharshBooks.getLatestDir());
 
-        FirebaseFirestore.getInstance().collection("directory").whereEqualTo("uid",firebaseDocumentID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Log.d("sba", "FileActivity onCreate: "+ sangharshBooks.getPath() );
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddDirectoryBottomSheetAdapter bottomSheet = new AddDirectoryBottomSheetAdapter(FileActivity.this,(SangharshBooks) getApplication());
+                bottomSheet.show(getSupportFragmentManager(), "addBottomSheet");
+            }
+        });
+
+        FirebaseFirestore.getInstance().collection("directory").whereEqualTo("path",sangharshBooks.getPath()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     if(!task.getResult().isEmpty()){
-                        directory = task.getResult().toObjects(Directory.class).get(0);
+                        directories = (ArrayList<Directory>) task.getResult().toObjects(Directory.class);
+                        directory =  task.getResult().toObjects(Directory.class).get(0);
                         recyclerView = findViewById(R.id.rv_file_activity);
-                        DirectoryAdapter directoryAdapter = new DirectoryAdapter(FileActivity.this,directory,(SangharshBooks) getApplication());
+                        directoryAdapter = new DirectoryAdapter(FileActivity.this,directory,(SangharshBooks) getApplication(),FileActivity.this);
+                        Log.d("sba", "FileActivity: oncomplete firebabe path get");
                         recyclerView.setAdapter(directoryAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(FileActivity.this));
                         progressBar.setVisibility(View.GONE);
+                        if(!(directory.getFiles().size()>0) && !(directory.getPdfModels().size()>0)){
+                            nothingAvailableTV.setVisibility(View.VISIBLE);
+                        }
                     }else{
+                        //new directory created.
+                        Directory directory = new Directory(1,new ArrayList<>(),new ArrayList<>(),sangharshBooks.getPath());
+                        FirebaseFirestore.getInstance().collection("directory").document().set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    //Toast.makeText(FileActivity.this, "Created successfully!", Toast.LENGTH_SHORT).show();
+                                    Log.d("sba", "onComplete: created empty document");
+                                }else{
+                                    Toast.makeText(FileActivity.this, "Something went wrong!!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        progressBar.setVisibility(View.GONE);
+                        nothingAvailableTV.setVisibility(View.VISIBLE);
+                        Log.d("sba", "onComplete: empty result"+task.getException());
                         //task empty
                     }
+                }else{
+                    Toast.makeText(FileActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Log.d("sba", "onComplete: "+task.getException());
                 }
             }
         });
 
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("sba fileactivity", "onBackPressed: before"+sangharshBooks.getPath());
+        sangharshBooks.removeRecentDirectoryFromPath();
+        Log.d("sba fileactivity", "onBackPressed: after"+sangharshBooks.getPath());
+    }
+
+    @Override
+    public void update() {
+        recreate();
     }
 }

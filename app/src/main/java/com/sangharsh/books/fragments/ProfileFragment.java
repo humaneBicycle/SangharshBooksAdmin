@@ -18,12 +18,14 @@ import android.widget.TextView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.sangharsh.books.PreferenceGetter;
 import com.sangharsh.books.R;
+import com.sangharsh.books.SangharshBooks;
 
 public class ProfileFragment extends Fragment {
 
     SwitchMaterial switchMaterial;
     TextView aboutUs;
     TextView privacyPolicy;
+    SangharshBooks sangharshBooks;
 
     public ProfileFragment(){}
 
@@ -38,20 +40,22 @@ public class ProfileFragment extends Fragment {
         initUI(view);
 
         switchMaterial.setChecked(Configuration.UI_MODE_NIGHT_YES == (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK));
-
+        sangharshBooks = (SangharshBooks)getActivity().getApplication();
 
         switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
                     if (compoundButton.isChecked()) {
-                        Log.d(TAG, "onCheckedChanged: 11");
+                        //Log.d(TAG, "onCheckedChanged: 11");
                         //getActivity().recreate();
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        sangharshBooks.setDarkMode(true);
                     } else {
-                        Log.d(TAG, "onCheckedChanged: 12");
+                        //Log.d(TAG, "onCheckedChanged: 12");
                         //getActivity().recreate();
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        sangharshBooks.setDarkMode(false);
                     }
 
 

@@ -4,6 +4,8 @@ public class FileModel {
     String name;
     String pointingDirId;
 
+    public FileModel(){}
+
     public FileModel(String name, String pointingDirId) {
         this.name = name;
         this.pointingDirId = pointingDirId;

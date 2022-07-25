@@ -14,5 +14,6 @@
         <!-- Customize your theme here. -->
         <item name="backgroundColorTheme">#000000</item>
         <item name="textColorTheme">#FFFFFF</item>
+        <item name="bottom_bar">#7A337585</item>
     </style>
 </resources>

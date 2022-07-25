@@ -1,7 +1,14 @@
 package com.sangharsh.books.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,6 +26,7 @@ public class GreetingFragment extends Fragment {
 ;
     TextView greetings;
     ImageView bell;
+    ConstraintLayout constraintLayout;
 
     public GreetingFragment() {
         // Required empty public constructor
@@ -32,6 +40,7 @@ public class GreetingFragment extends Fragment {
 
 
         bell = view.findViewById(R.id.notification_greetings_flag);
+        constraintLayout = view.findViewById(R.id.greetings_background);
         greetings = view.findViewById(R.id.greetings_frag);
         greetings.setText(getGreetings());
 
@@ -41,6 +50,20 @@ public class GreetingFragment extends Fragment {
 
             }
         });
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blur);
+        Bitmap newBitmap = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+// create a canvas where we can draw on
+        Canvas canvas = new Canvas(newBitmap);
+// create a paint instance with alpha
+        Paint alphaPaint = new Paint();
+        alphaPaint.setAlpha(210);
+// now lets draw using alphaPaint instance
+        canvas.drawBitmap(originalBitmap, 0, 0, alphaPaint);
+
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
+        final float roundPx = (float) originalBitmap.getWidth() * 0.06f;
+        roundedBitmapDrawable.setCornerRadius(roundPx);
+        constraintLayout.setBackground(roundedBitmapDrawable);
 
         return view;
     }

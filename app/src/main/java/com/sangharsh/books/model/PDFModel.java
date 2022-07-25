@@ -5,12 +5,26 @@ public class PDFModel {
     String url;
     String offlinePath;//null if not downloaded
     String name;
+    String pointingDir;
+    boolean isBookMarked;
 
-    public PDFModel(boolean isOfflineAvailable, String url, String offlinePath, String name) {
+    public boolean isBookMarked() {
+        return isBookMarked;
+    }
+
+    public void setBookMarked(boolean bookMarked) {
+        isBookMarked = bookMarked;
+    }
+
+    public PDFModel (){}
+
+    public PDFModel(boolean isOfflineAvailable, String url, String offlinePath, String name,String pointingDir,boolean isBookMarked) {
         this.isOfflineAvailable = isOfflineAvailable;
         this.url = url;
         this.offlinePath = offlinePath;
         this.name = name;
+        this.pointingDir = pointingDir;
+        this.isBookMarked=isBookMarked;
     }
 
     public String getName() {
@@ -43,5 +57,13 @@ public class PDFModel {
 
     public void setOfflinePath(String offlinePath) {
         this.offlinePath = offlinePath;
+    }
+
+    public String getPointingDir() {
+        return pointingDir;
+    }
+
+    public void setPointingDir(String pointingDir) {
+        this.pointingDir = pointingDir;
     }
 }

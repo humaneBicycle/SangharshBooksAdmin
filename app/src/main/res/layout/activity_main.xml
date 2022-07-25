@@ -19,36 +19,38 @@
     <FrameLayout
         android:id="@+id/body_holder_main_activity"
         android:layout_width="match_parent"
-        android:background="?attr/backgroundColorTheme"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
+        android:background="?attr/backgroundColorTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomBar"
         app:layout_constraintTop_toBottomOf="@+id/greetings_holder" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_home_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/body_holder_main_activity"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_baseline_add_24"
         android:layout_margin="16dp"
         android:elevation="16dp"
-        android:id="@+id/add_home_admin"/>
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <me.ibrahimsn.lib.SmoothBottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_margin="8dp"
-        app:iconTintActive="@color/greenPrimary"
-        app:backgroundColor="?attr/backgroundColorTheme"
-        app:iconTint="?attr/textColorTheme"
-        app:cornerRadius="24dp"
+        app:iconTintActive="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav"
         app:textColor="?attr/textColorTheme"
-        app:textSize="24sp" />
+        app:textSize="24sp"
+        android:elevation="24dp"
+        app:cornerRadius="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:backgroundColor="#00E2F8F8"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

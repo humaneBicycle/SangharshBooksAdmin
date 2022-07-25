@@ -1,9 +1,15 @@
 package com.sangharsh.books;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     SmoothBottomBar smoothBottomBar;
     FloatingActionButton fab;
+    HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
                 case Configuration.UI_MODE_NIGHT_YES:
                     //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     setTheme(R.style.Theme_Dark);
+                    ((SangharshBooks)getApplication()).setDarkMode(true);
                     Log.d("sba", "onCreate: 21");
                     break;
                 case Configuration.UI_MODE_NIGHT_NO:
                     //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     setTheme(R.style.Theme_Light);
+                    ((SangharshBooks)getApplication()).setDarkMode(false);
                     Log.d("sba", "onCreate: 22");
                     // process
                     break;
@@ -52,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if(savedInstanceState==null){
+            homeFragment = new HomeFragment();
             FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
-            ft1.replace(R.id.body_holder_main_activity, new HomeFragment(), "home");
+            ft1.replace(R.id.body_holder_main_activity, homeFragment, "home");
             ft1.commit();
         }
 
@@ -62,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemSelect(int i) {
                 if(i==0) {
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.body_holder_main_activity, new HomeFragment(), "home");
+                    if(homeFragment==null) {
+                        homeFragment = new HomeFragment();
+                    }
+                    fragmentTransaction.replace(R.id.body_holder_main_activity, homeFragment, "home");
                     fragmentTransaction.commit();
                 }else if(i==1){
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -90,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AddDirectoryBottomSheetAdapter bottomSheet = new AddDirectoryBottomSheetAdapter(MainActivity.this,(SangharshBooks) getApplication());
                 bottomSheet.show(getSupportFragmentManager(), "addBottomSheet");
+                //bottomSheet.attackCallback(homeFragment);
             }
         });
 
@@ -98,11 +112,25 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
 
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blur);
+        Bitmap newBitmap = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+// create a canvas where we can draw on
+        Canvas canvas = new Canvas(newBitmap);
+// create a paint instance with alpha
+        Paint alphaPaint = new Paint();
+        alphaPaint.setAlpha(210);
+// now lets draw using alphaPaint instance
+        canvas.drawBitmap(originalBitmap, 0, 0, alphaPaint);
 
-
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
+        final float roundPx = (float) originalBitmap.getWidth() * 0.06f;
+        roundedBitmapDrawable.setCornerRadius(roundPx);
+        smoothBottomBar.setBackground(roundedBitmapDrawable);
     }
 
+    @Override
+    protected void onResume() {
 
-
-
+        super.onResume();
+    }
 }

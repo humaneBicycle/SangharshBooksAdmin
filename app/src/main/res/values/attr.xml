@@ -3,6 +3,7 @@
     <declare-styleable name="darkTheme">
         <attr name="backgroundColorTheme" format="color"/>
         <attr name="textColorTheme" format="color"/>
+        <attr name="bottom_bar" format="color"/>
     </declare-styleable>
 
 </resources>
