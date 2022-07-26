@@ -149,12 +149,17 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
                                             });
                                         }
                                     }else{
+                                        ArrayList<FileModel> fileModels = new ArrayList<>();
+                                        FileModel fileModel = new FileModel(fileName.getText().toString(),sangharshBooks.getPath()+"\\"+fileName.getText().toString());
+                                        fileModels.add(fileModel);
+                                        directory = new Directory(0,fileModels,new ArrayList<>(),sangharshBooks.getPath());
+                                        //directory.getFiles().add(fileModel);
                                         FirebaseFirestore.getInstance().collection("directory").document().set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(context, "Successfully added file!", Toast.LENGTH_SHORT).show();
-                                                    callback.Callback();
+                                                    //callback.Callback();
                                                     //Log.d("sba", "onComplete: noooooo");
                                                     dismiss();
                                                 } else {

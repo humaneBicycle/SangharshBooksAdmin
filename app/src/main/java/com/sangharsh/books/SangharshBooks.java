@@ -93,6 +93,7 @@ public class SangharshBooks extends Application {
         }
     }
 
+
     public void clearRecentPDFModel(){
         pdfModel =null;
     }

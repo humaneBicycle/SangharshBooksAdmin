@@ -1,20 +1,27 @@
 package com.sangharsh.books;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sangharsh.books.adapter.AddDirectoryBottomSheetAdapter;
 import com.sangharsh.books.fragments.BookmarksFragment;
 import com.sangharsh.books.fragments.DownloadsFragment;
@@ -30,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     SmoothBottomBar smoothBottomBar;
     FloatingActionButton fab;
     HomeFragment homeFragment;
+    SangharshBooks sangharshBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sangharshBooks = (SangharshBooks) getApplication();
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("sangharshBooks","Sangharsh Books", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("general").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d("sba notification operation", "message received");
+
+                }
+            }
+        });
 
         smoothBottomBar = findViewById(R.id.bottomBar);
         fab = findViewById(R.id.add_home_admin);

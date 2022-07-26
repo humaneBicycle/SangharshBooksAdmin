@@ -65,7 +65,9 @@ public class LongClickOptions extends BottomSheetDialogFragment {
                 @Override
                 public void onClick(View view) {
                     Log.d("sba long click", "onCreateView: "+ getTag());
-                    deleteFile(sangharshBooks.getPath()+"\\"+fileModel.getName());
+                    deleteFile(fileModel.getPointingDirId());
+                    deleteButton.setEnabled(false);
+
 
                 }
             });
@@ -112,6 +114,7 @@ public class LongClickOptions extends BottomSheetDialogFragment {
                     Log.d("sba long click", "onCreateView: "+ getTag());
 
                         deletePDF();
+                        deleteButton.setEnabled(false);
 
 
                 }
@@ -124,10 +127,69 @@ public class LongClickOptions extends BottomSheetDialogFragment {
     }
 
     private void deleteFile(String pathOfFile) {
+        Log.d("sba del operation", "finc entry deleteFilePath: "+pathOfFile);
+        if(sangharshBooks.getPath().equals(getParentDirectoryPath(pathOfFile))){
+            FirebaseFirestore.getInstance().collection("directory").whereEqualTo("path",getParentDirectoryPath(pathOfFile)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        if(!task.getResult().isEmpty()){
+                            Directory parentDirectory = task.getResult().toObjects(Directory.class).get(0);
+                            for(int i =0;i<parentDirectory.getFiles().size();i++){
+                                if(parentDirectory.getFiles().get(i).getPointingDirId().equals(fileModel.getPointingDirId())){
+                                    parentDirectory.getFiles().remove(i);
+                                    String idToDelete=task.getResult().getDocuments().get(0).getId();
+                                    FirebaseFirestore.getInstance().collection("directory").document().set(parentDirectory).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                FirebaseFirestore.getInstance().collection("directory").document(idToDelete).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            Log.d("sbe delete operation", "onComplete: file deleted from arraylist of parent dir");
+                                                        }else{
+                                                            return;
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
         FirebaseFirestore.getInstance().collection("directory").whereEqualTo("path",pathOfFile).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                if(task.isSuccessful()){
+                    if(!task.getResult().isEmpty()) {
+                        Directory directory = task.getResult().toObjects(Directory.class).get(0);
+                        for (int i = 0; i < directory.getFiles().size(); i++) {
+                            Log.d("sba delete operation", "deleting at path " + directory.getFiles().get(i).getPointingDirId());
+                            deleteFile(directory.getFiles().get(i).getPointingDirId());
+                        }
+                        String docid = task.getResult().getDocuments().get(0).getId();
+                        Log.d("sba delete operation", "deleting directory with id " + docid);
+                        FirebaseFirestore.getInstance().collection("directory").document(docid).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("sba del operation", "onComplete: with path "+pathOfFile);
+                                }
+                            }
+                        });
+                    }else{
+                        Log.d("sba del operation", "this file " +pathOfFile+" was not createed yet");
+                    }
+                }else{
+                    Toast.makeText(context, "Deletion Failed!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -187,6 +249,18 @@ public class LongClickOptions extends BottomSheetDialogFragment {
                 }
             }
         });
+    }
+    public String getParentDirectoryPath(String k){
+        String s=k;
+        for(int i = s.length()-1;i>=0;i--){
+            if('\\'==s.charAt(i)){
+                s = s.substring(0,i);
+
+                break;
+            }
+        }
+        return s;
+
     }
 
 
