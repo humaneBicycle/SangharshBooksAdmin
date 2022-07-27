@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,19 +70,29 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.uiUpdaterHomeFrag = uiUpdateHomeFrag;
         //this.activity = activity;
 
-        colors = new ArrayList<>();
+        inflateColors();
+        inflateLayers();
+    }
+
+    private void inflateColors(){
+        if(colors==null) {
+            colors = new ArrayList<>();
+        }
         colors.add(R.color.my_green);
         colors.add(R.color.my_blue);
         colors.add(R.color.my_red);
         colors.add(R.color.my_yellow);
         colors.add(R.color.my_skyblue);
         colors.add(R.color.my_purple);
+    }
 
-        layers = new ArrayList<>();
+    private void inflateLayers(){
+        if(layers==null) {
+            layers = new ArrayList<>();
+        }
         layers.add(R.drawable.ic_layer_1);
         layers.add(R.drawable.ic_layer_2);
         layers.add(R.drawable.ic_layer_3);
-        layers.add(R.drawable.ic_layer_4);
     }
 
     @NonNull
@@ -108,8 +119,19 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if(holder instanceof MyViewHolder){
             //it is a file
             ((MyViewHolder) holder).fileNameTextView.setText(directory.getFiles().get(position).getName());
-            ((MyViewHolder) holder).linearLayout.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(colors.get(new Random().nextInt(colors.size())))));
-            ((MyViewHolder) holder).fileItemBG.setBackground(context.getResources().getDrawable(layers.get(new Random().nextInt(layers.size()))));
+            int randForColor = new Random().nextInt(colors.size());
+            ((MyViewHolder) holder).linearLayout.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(colors.get(randForColor))));
+            colors.remove(randForColor);
+            if(colors.size()==0){
+                inflateColors();
+            }
+            int randForLayer = new Random().nextInt(layers.size());
+            ((MyViewHolder) holder).fileItemBG.setBackground(context.getResources().getDrawable(layers.get(randForLayer)));
+            layers.remove(randForLayer);
+            if(layers.size()==0){
+                inflateLayers();
+            }
+
             ((MyViewHolder) holder).linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -123,7 +145,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((MyViewHolder) holder).linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    LongClickOptions longClickOptions = new LongClickOptions(sangharshBooks,context,directory.getFiles().get(position),uiUpdaterHomeFrag);
+                    LongClickOptions longClickOptions = new LongClickOptions(sangharshBooks,context,directory.getFiles().get(position),uiUpdaterHomeFrag,DirectoryAdapter.this,position,directory.getFiles());
                     FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                     longClickOptions.show(manager,"longClickOptionsFile");
                     return true;
@@ -137,12 +159,19 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((PDFVIewHolder) holder).relativeLayoutBG.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    LongClickOptions longClickOptions = new LongClickOptions(sangharshBooks,context,directory.getPdfModels().get(index),uiUpdaterHomeFrag);
+                    LongClickOptions longClickOptions = new LongClickOptions(sangharshBooks,context,directory.getPdfModels().get(index),uiUpdaterHomeFrag,DirectoryAdapter.this,position,index, directory.getPdfModels());
                     FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                     longClickOptions.show(manager,"longClickOptionsPDF");
                     return true;
                 }
             });
+
+            int randForColor = new Random().nextInt(colors.size());
+            ((PDFVIewHolder) holder).llBG.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(colors.get(randForColor))));
+            colors.remove(randForColor);
+            if(colors.size()==0){
+                inflateColors();
+            }
             //ArrayList<PDFModel> pdfModels1 =  new StorageHelper(context).getArrayListOfPDFModel(StorageHelper.BOOKMARKS);
 //            for (int i = 0;i<pdfModels1.size();i++){
 //                if(directory.getPdfModels().get(index).getPointingDir().equals(pdfModels1.get(i).getPointingDir())){
@@ -488,10 +517,11 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public class PDFVIewHolder extends RecyclerView.ViewHolder{
         TextView pdfNamepdfItem;
         TextView advancedPDFViewer, basicPDFViewer;
-        RelativeLayout relativeLayoutBG;
+        ConstraintLayout relativeLayoutBG;
         SeekBar seekBar;
         TextView downloadPercentTV;
         ImageView bookMarkImg;
+        LinearLayout llBG;
 
         public PDFVIewHolder(View itemView){
             super(itemView);
@@ -502,6 +532,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             seekBar = itemView.findViewById(R.id.pdf_item_download_seekbar);
             downloadPercentTV = itemView.findViewById(R.id.download_percent);
             //bookMarkImg = itemView.findViewById(R.id.is_bookmarked_pdf_item);
+            llBG = itemView.findViewById(R.id.ll);
 
         }
     }

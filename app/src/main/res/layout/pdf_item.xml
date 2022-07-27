@@ -1,84 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/pdf_item_background">
+    android:id="@+id/pdf_item_background"
+    android:layout_margin="8dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/circle"
         android:orientation="horizontal"
-        android:id="@+id/ll">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="6dp">
 
-        <TextView
-            android:id="@+id/pdf_name_pdf_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/poppinsbold"
-            android:textColor="?attr/textColorTheme"
-            android:textSize="24sp"
-            android:layout_weight="1"/>
+        i
+
+        <ImageView
+            android:id="@+id/img_pdf"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:backgroundTint="?attr/textColorTheme"
+            android:padding="6dp"
+            android:src="@drawable/ic_baseline_picture_as_pdf_24" />
+
+
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/pdf_name_pdf_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/add"
+        android:fontFamily="@font/poppinsregular"
+        android:textColor="?attr/textColorTheme"
+        android:textSize="26sp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="18dp"
+        app:layout_constraintStart_toEndOf="@+id/ll"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/text_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll"
-        android:id="@+id/text_ll">
+        app:layout_constraintTop_toBottomOf="@+id/ll"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="18dp">
 
         <TextView
+            android:id="@+id/pdf_view_advance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsbold"
-            android:layout_marginLeft="12dp"
-            android:id="@+id/pdf_view_advance"
-            android:textColor="?attr/textColorTheme"
-            android:textSize="18sp"
+            android:fontFamily="@font/poppinsregular"
             android:text="@string/advanced_pdf_viewer"
-            />
+            android:textColor="?attr/textColorTheme"
+            android:textSize="18sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <TextView
+            android:id="@+id/pdf_view_basic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:fontFamily="@font/poppinsbold"
-            android:id="@+id/pdf_view_basic"
+            android:fontFamily="@font/poppinsregular"
+            android:text="@string/basic_pdf_viewer"
             android:textColor="?attr/textColorTheme"
-            android:textSize="18sp"
-            android:text="@string/basic_pdf_viewer"/>
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@id/text_ll"
         android:orientation="horizontal"
-        android:layout_below="@id/text_ll">
+        app:layout_constraintTop_toBottomOf="@+id/text_ll">
 
         <SeekBar
             android:id="@+id/pdf_item_download_seekbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
+            android:id="@+id/download_percent"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppinsregular"
             android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/pdf_item_download_seekbar"
+            android:fontFamily="@font/poppinsregular"
             android:textColor="?attr/textColorTheme"
             android:textSize="18sp"
-            android:id="@+id/download_percent"
-            android:visibility="gone"
-            android:layout_toRightOf="@id/pdf_item_download_seekbar"/>
+            android:visibility="gone" />
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

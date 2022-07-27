@@ -1,5 +1,6 @@
 package com.sangharsh.books.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sangharsh.books.NotificationActivity;
 import com.sangharsh.books.R;
 
 import java.util.Calendar;
@@ -47,23 +49,23 @@ public class GreetingFragment extends Fragment {
         bell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getActivity().startActivity(new Intent(getActivity(), NotificationActivity.class));
             }
         });
-        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blur);
-        Bitmap newBitmap = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
-// create a canvas where we can draw on
-        Canvas canvas = new Canvas(newBitmap);
-// create a paint instance with alpha
-        Paint alphaPaint = new Paint();
-        alphaPaint.setAlpha(210);
-// now lets draw using alphaPaint instance
-        canvas.drawBitmap(originalBitmap, 0, 0, alphaPaint);
-
-        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
-        final float roundPx = (float) originalBitmap.getWidth() * 0.06f;
-        roundedBitmapDrawable.setCornerRadius(roundPx);
-        constraintLayout.setBackground(roundedBitmapDrawable);
+//        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blur);
+//        Bitmap newBitmap = Bitmap.createBitmap(originalBitmap.getWidth(), originalBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+//// create a canvas where we can draw on
+//        Canvas canvas = new Canvas(newBitmap);
+//// create a paint instance with alpha
+//        Paint alphaPaint = new Paint();
+//        alphaPaint.setAlpha(210);
+//// now lets draw using alphaPaint instance
+//        canvas.drawBitmap(originalBitmap, 0, 0, alphaPaint);
+//
+//        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
+//        final float roundPx = (float) originalBitmap.getWidth() * 0.06f;
+//        roundedBitmapDrawable.setCornerRadius(roundPx);
+//        constraintLayout.setBackground(roundedBitmapDrawable);
 
         return view;
     }

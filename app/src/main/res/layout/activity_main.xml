@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="?attr/backgroundColorTheme"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintTop_toBottomOf="@+id/greetings_holder" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,19 +38,20 @@
     <me.ibrahimsn.lib.SmoothBottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:iconTintActive="@color/black"
+        android:layout_height="60dp"
+        app:iconTint="?attr/textColorTheme"
+        app:iconTintActive="?attr/textColorTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav"
         app:textColor="?attr/textColorTheme"
         app:textSize="24sp"
-        android:elevation="24dp"
+        app:iconSize="28dp"
         app:cornerRadius="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        app:backgroundColor="#00E2F8F8"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        app:backgroundColor="?attr/backgroundColorTheme"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

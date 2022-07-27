@@ -26,6 +26,7 @@ import com.sangharsh.books.model.Directory;
 import com.sangharsh.books.model.FileModel;
 import com.sangharsh.books.model.PDFModel;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class LongClickOptions extends BottomSheetDialogFragment {
@@ -38,19 +39,31 @@ public class LongClickOptions extends BottomSheetDialogFragment {
     ArrayList<PDFModel> bookmarkedPdfs;
     int j;
     UIUpdateHomeFrag uiUpdateHomeFrag;
+    int pos, index;
+    ArrayList<PDFModel> pdfModels;
+    ArrayList<FileModel> fileModels;
+    DirectoryAdapter adapter;
 
 
-    public LongClickOptions(SangharshBooks sangharshBooks, Context context,FileModel fileModel,UIUpdateHomeFrag uiUpdateHomeFrag){
+    public LongClickOptions(SangharshBooks sangharshBooks, Context context,FileModel fileModel,UIUpdateHomeFrag uiUpdateHomeFrag,DirectoryAdapter adapter,int pos,ArrayList<FileModel> fileModels){
         this.sangharshBooks = sangharshBooks;
         this.context = context;
         this.fileModel = fileModel;
         this.uiUpdateHomeFrag = uiUpdateHomeFrag;
+        this.pos=pos;
+        this.index = index;
+        this.fileModels = fileModels;
+        this.adapter = adapter;
     }
-    public LongClickOptions(SangharshBooks sangharshBooks, Context context, PDFModel pdfModel,UIUpdateHomeFrag uiUpdateHomeFrag){
+    public LongClickOptions(SangharshBooks sangharshBooks, Context context, PDFModel pdfModel,UIUpdateHomeFrag uiUpdateHomeFrag,DirectoryAdapter adapter,int pos,int index,ArrayList<PDFModel> pdfModels){
         this.sangharshBooks = sangharshBooks;
         this.context = context;
         this.pdfModel = pdfModel;
         this.uiUpdateHomeFrag = uiUpdateHomeFrag;
+        this.pos=pos;
+        this.index = index;
+        this.pdfModels = pdfModels;
+        this.adapter=adapter;
     }
 
     @Nullable
@@ -147,6 +160,9 @@ public class LongClickOptions extends BottomSheetDialogFragment {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if(task.isSuccessful()){
+                                                            fileModels.remove(pos);
+                                                            adapter.notifyDataSetChanged();
+                                                            dismiss();
                                                             Log.d("sbe delete operation", "onComplete: file deleted from arraylist of parent dir");
                                                         }else{
                                                             return;
@@ -180,6 +196,7 @@ public class LongClickOptions extends BottomSheetDialogFragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+
                                     Log.d("sba del operation", "onComplete: with path "+pathOfFile);
                                 }
                             }
@@ -227,8 +244,10 @@ public class LongClickOptions extends BottomSheetDialogFragment {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
-
                                                     uiUpdateHomeFrag.update();
+                                                    pdfModels.remove(index);
+                                                    adapter.notifyItemRemoved(index);
+                                                    adapter.notifyDataSetChanged();
                                                     dismiss();
 
                                                 }else{

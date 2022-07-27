@@ -63,15 +63,32 @@
         android:fontFamily="@font/poppinsregular"
         android:visibility="gone"/>
 
-    <EditText
-        android:id="@+id/pdf_url_edittext"
+<!--    <EditText-->
+<!--        android:id="@+id/pdf_url_edittext"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/poppinsregular"-->
+<!--        android:hint="@string/enter_pdf_url"-->
+<!--        android:layout_margin="12dp"-->
+<!--        android:textColor="?attr/textColorTheme"-->
+<!--        android:textColorHint="?attr/textColorTheme"-->
+<!--        android:visibility="gone"/>-->
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="?attr/backgroundColorTheme"
         android:fontFamily="@font/poppinsregular"
-        android:hint="@string/enter_pdf_url"
-        android:layout_margin="12dp"
+        android:text="Add pdf from storage"
         android:textColor="?attr/textColorTheme"
-        android:textColorHint="?attr/textColorTheme"
+        android:id="@+id/add_pdf_local_storage"
+        android:textSize="18sp"
+        android:visibility="gone"/>
+    <SeekBar
+        android:id="@+id/upload_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:visibility="gone"/>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -84,4 +101,5 @@
         android:textColor="?attr/textColorTheme"
         android:id="@+id/bottom_sheet_add_button"
         android:textSize="18sp"/>
+
 </LinearLayout>

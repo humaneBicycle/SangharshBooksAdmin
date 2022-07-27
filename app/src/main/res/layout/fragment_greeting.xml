@@ -6,9 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/backgroundColorTheme"
     tools:context=".fragments.GreetingFragment"
-    android:layout_margin="10dp"
+    android:layout_margin="4dp"
     android:id="@+id/greetings_background"
-    android:padding="12dp">
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/textView"
@@ -34,10 +34,10 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:id="@+id/notification_greetings_flag"
-        android:src="@drawable/notification_bell"
+        android:src="@drawable/ic_baseline_notifications_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="15dp"

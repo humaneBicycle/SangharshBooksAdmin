@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,10 +23,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.sangharsh.books.adapter.AddDirectoryBottomSheetAdapter;
 import com.sangharsh.books.adapter.DirectoryAdapter;
 import com.sangharsh.books.model.Directory;
+import com.sangharsh.books.model.FileModel;
+import com.sangharsh.books.model.PDFModel;
 
 import java.util.ArrayList;
 
-public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag {
+public class FileActivity extends AppCompatActivity implements DirectoryChangeListener,UIUpdateHomeFrag {
     ProgressBar progressBar;
     TextView nothingAvailableTV, heading;
     SangharshBooks sangharshBooks;
@@ -34,6 +37,8 @@ public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag 
     ArrayList<Directory> directories;
     RecyclerView recyclerView;
     DirectoryAdapter directoryAdapter;
+    ImageView imageView;
+    int hotFixDontAsk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +50,25 @@ public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag 
             setTheme(R.style.Theme_Light);
         }
 
-        setContentView(R.layout.activity_file);
-
-
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-
-
-        progressBar = findViewById(R.id.progress_file_activity);
+        setContentView(R.layout.activity_file);progressBar = findViewById(R.id.progress_file_activity);
         nothingAvailableTV = findViewById(R.id.text_nothing_available_file_activity);
         floatingActionButton = findViewById(R.id.fab_file_activity);
         heading = findViewById(R.id.file_activity_heading);
+        imageView = findViewById(R.id.back_file);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         heading.setText(sangharshBooks.getLatestDir());
-
-        Log.d("sba", "FileActivity onCreate: "+ sangharshBooks.getPath() );
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddDirectoryBottomSheetAdapter bottomSheet = new AddDirectoryBottomSheetAdapter(FileActivity.this,(SangharshBooks) getApplication());
+                AddDirectoryBottomSheetAdapter bottomSheet = new AddDirectoryBottomSheetAdapter(FileActivity.this,(SangharshBooks) getApplication(),FileActivity.this,FileActivity.this);
                 bottomSheet.show(getSupportFragmentManager(), "addBottomSheet");
             }
         });
@@ -78,7 +82,6 @@ public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag 
                         directory =  task.getResult().toObjects(Directory.class).get(0);
                         recyclerView = findViewById(R.id.rv_file_activity);
                         directoryAdapter = new DirectoryAdapter(FileActivity.this,directory,(SangharshBooks) getApplication(),FileActivity.this);
-                        Log.d("sba", "FileActivity: oncomplete firebabe path get");
                         recyclerView.setAdapter(directoryAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(FileActivity.this));
                         progressBar.setVisibility(View.GONE);
@@ -87,7 +90,9 @@ public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag 
                         }
                     }else{
                         //new directory created.
-                        Directory directory = new Directory(1,new ArrayList<>(),new ArrayList<>(),sangharshBooks.getPath());
+                        hotFixDontAsk=1;
+                        directory = new Directory(1,new ArrayList<>(),new ArrayList<>(),sangharshBooks.getPath());
+                        directoryAdapter = new DirectoryAdapter(FileActivity.this,directory,(SangharshBooks) getApplication(),FileActivity.this);
                         FirebaseFirestore.getInstance().collection("directory").document().set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -111,21 +116,47 @@ public class FileActivity extends AppCompatActivity implements UIUpdateHomeFrag 
                 }
             }
         });
-
-
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.d("sba fileactivity", "onBackPressed: before"+sangharshBooks.getPath());
         sangharshBooks.removeRecentDirectoryFromPath();
-        Log.d("sba fileactivity", "onBackPressed: after"+sangharshBooks.getPath());
     }
 
     @Override
     public void update() {
-        recreate();
+        //recreate();
+    }
+
+    @Override
+    public void onFileModelAdded(FileModel fileModel) {
+        if(hotFixDontAsk==1){
+            recreate();
+        }else {
+            if (directory != null && directoryAdapter != null) {
+                directory.getFiles().add(fileModel);
+                directoryAdapter.notifyDataSetChanged();
+            }
+            if (directory.getPdfModels().size() + directory.getFiles().size() == 1) {
+                nothingAvailableTV.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onPDFModelAdded(PDFModel pdfModel) {
+        if(hotFixDontAsk==1){
+            recreate();
+        }else {
+            if (directory != null && directoryAdapter != null) {
+                directory.getPdfModels().add(pdfModel);
+                directoryAdapter.notifyDataSetChanged();
+            }
+
+            if (directory.getPdfModels().size() + directory.getFiles().size() == 1) {
+                nothingAvailableTV.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }

@@ -21,15 +21,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.sangharsh.books.Callback;
+import com.sangharsh.books.DirectoryChangeListener;
 import com.sangharsh.books.R;
 import com.sangharsh.books.SangharshBooks;
 import com.sangharsh.books.UIUpdateHomeFrag;
 import com.sangharsh.books.adapter.DirectoryAdapter;
 import com.sangharsh.books.model.Directory;
+import com.sangharsh.books.model.FileModel;
+import com.sangharsh.books.model.PDFModel;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements UIUpdateHomeFrag {
+public class HomeFragment extends Fragment implements UIUpdateHomeFrag, DirectoryChangeListener {
 
     RecyclerView recyclerView;
     Directory directory;
@@ -97,6 +100,38 @@ public class HomeFragment extends Fragment implements UIUpdateHomeFrag {
 
     @Override
     public void update() {
+        Log.d("sba", "update: file added listened");
+//        directoryAdapter.notifyDataSetChanged();
+        //updateAdapterDataset();
+    }
+
+    @Override
+    public void onFileModelAdded(FileModel fileModel) {
+        if(directory!=null && directoryAdapter!=null) {
+            //Log.d("sba file creation callback", "onFileModelAdded: not null");
+            directory.getFiles().add(fileModel);
+            directoryAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onPDFModelAdded(PDFModel pdfModel) {
+        if(directory!=null && directoryAdapter!=null) {
+            directory.getPdfModels().add(pdfModel);
+            directoryAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void updateAdapterDataset(){
+        Log.d("sba", "update: file added listened");
         directoryAdapter.notifyDataSetChanged();
+//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.body_holder_main_activity,new HomeFragment());
+        if((directory.getPdfModels().size()+directory.getFiles().size())==0){
+            nothingAvailableTV.setVisibility(View.VISIBLE);
+        }
+        if((directory.getPdfModels().size()+directory.getFiles().size())==1){
+            nothingAvailableTV.setVisibility(View.GONE);
+        }
+
     }
 }
