@@ -8,22 +8,29 @@
     android:background="?attr/backgroundColorTheme"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/greetings_holder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/body_holder_main_activity"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="?attr/backgroundColorTheme"
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
-        app:layout_constraintTop_toBottomOf="@+id/greetings_holder" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/greetings_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:id="@+id/body_holder_main_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundColorTheme" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_home_admin"
         android:layout_width="wrap_content"
@@ -45,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav"
+        app:indicatorColor="?attr/bottom_bar_indicator"
         app:textColor="?attr/textColorTheme"
         app:textSize="24sp"
         app:iconSize="28dp"

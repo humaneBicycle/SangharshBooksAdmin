@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sangharsh.books">
+    package="com.sangharshAdmin.books">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".SangharshBooks"
+        android:name="com.sangharshAdmin.books.SangharshBooks"
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,7 +19,7 @@
         android:theme="@style/Theme.Light"
         tools:targetApi="31">
         <activity
-            android:name=".NotificationActivity"
+            android:name="com.sangharshAdmin.books.NotificationActivity"
             android:exported="false" />
 
         <provider
@@ -33,13 +33,13 @@
         </provider>
 
         <activity
-            android:name=".PDFDisplay"
+            android:name="com.sangharshAdmin.books.PDFDisplay"
             android:exported="false" />
         <activity
-            android:name=".FileActivity"
+            android:name="com.sangharshAdmin.books.FileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.sangharshAdmin.books.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +49,7 @@
         </activity>
 
         <service
-            android:name=".NotificationMessagingService"
+            android:name="com.sangharshAdmin.books.NotificationMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

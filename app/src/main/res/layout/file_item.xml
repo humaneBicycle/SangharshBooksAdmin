@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:layout_height="124dp"
         android:orientation="horizontal"
         android:id="@+id/file_item_background"
         android:background="@drawable/default_gradient">
@@ -21,9 +21,11 @@
             android:layout_margin="12dp"
             android:fontFamily="@font/poppinsregular"
             android:textColor="?attr/textColorTheme"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:layout_weight="1"
             android:maxLength="18"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
