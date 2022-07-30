@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sangharshAdmin.books.R;
 import com.sangharshAdmin.books.StorageHelper;
 import com.sangharshAdmin.books.adapter.PDFAdapter;
 import com.sangharshAdmin.books.model.PDFModel;
@@ -44,14 +43,6 @@ public class BookmarksFragment extends Fragment {
         recyclerView.setAdapter(pdfAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-//                ((AppCompatActivity)getContext()).getSupportFragmentManager().findFragmentById();
-
-                // in here you can do logic when backPress is clicked
-            }
-        });
 
         return view;
     }
