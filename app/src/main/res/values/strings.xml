@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sangharsh Books Admin</string>
+    <string name="app_name">Bihar 10th Admin</string>
     <string name="good">Good</string>
     <string name="morning">Morning!</string>
     <string name="evening">Evening!</string>
@@ -20,8 +20,11 @@
     <string name="delete">Delete</string>
     <string name="select_type">Select Type</string>
     <string name="add">Add</string>
+    <string name="add_banner">Add Banner</string>
+    <string name="delete_banner">Delete Banner</string>
     <string name="enter_pdf_name">Enter PDF Name</string>
     <string name="enter_file_name">Enter File Name</string>
     <string name="enter_pdf_url">Enter PDF URL</string>
     <string name="bookmark">Bookmark</string>
+
 </resources>

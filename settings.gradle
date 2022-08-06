@@ -14,5 +14,5 @@ dependencyResolutionManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = "Sangharsh Books"
+rootProject.name = "Sangharsh Books Admin"
 include ':app'
