@@ -1,6 +1,7 @@
 package com.sangharshAdmin.book.adapter;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -67,6 +68,7 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
         this.callback = callback;
     }
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,6 +106,13 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 context.startActivity(new Intent(context, BannerDeleteActivity.class));
+            }
+        });
+
+        v.findViewById(R.id.add_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //startActivity(new Intent(context,TestActivity.kt));
             }
         });
 

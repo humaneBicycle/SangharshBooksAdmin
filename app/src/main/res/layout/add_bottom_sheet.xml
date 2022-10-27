@@ -32,6 +32,16 @@
             android:textColor="?attr/textColorTheme"
             android:id="@+id/delete_banner_my"
             android:textSize="18sp"/>
+            <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="?attr/backgroundColorTheme"
+            android:fontFamily="@font/poppinsregular"
+            android:text="@string/delete_banner"
+            android:textColor="?attr/textColorTheme"
+            android:id="@+id/add_test"
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/textView2"
