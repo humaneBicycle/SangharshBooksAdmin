@@ -297,19 +297,20 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
                                         if(b){
                                             Toast.makeText(context, "PDF Already exists!", Toast.LENGTH_SHORT).show();
                                         }else{
-//                                            PDFModel pdfModel = new PDFModel(false,pdfURL.getText().toString(),"",pdfName.getText().toString(),sangharshBooks.getPath()+"\\"+pdfName.getText().toString(),false);
-//                                            directory.getPdfModels().add(pdfModel);
-//                                            FirebaseFirestore.getInstance().collection("directory").document(id).set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                @Override
-//                                                public void onComplete(@NonNull Task<Void> task) {
-//                                                    if(task.isSuccessful()){
-//                                                        Toast.makeText(context, "PDF added successfully!", Toast.LENGTH_SHORT).show();
-//                                                        callback.update();
-//                                                    }else{
-//                                                        Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                }
-//                                            });
+                                            PDFModel pdfModel = new PDFModel(false,pdfURL.getText().toString(),"",pdfName.getText().toString(),sangharshBooks.getPath()+"\\"+pdfName.getText().toString(),false);
+                                            directory.getPdfModels().add(pdfModel);
+                                            FirebaseFirestore.getInstance().collection("directory").document(id).set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(context, "PDF added successfully!", Toast.LENGTH_SHORT).show();
+                                                        dismiss();
+                                                        callback.onPDFModelAdded(pdfModel);
+                                                    }else{
+                                                        Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                                         }
                                     }else {
                                         Log.d("aba addbottomsheet", "onComplete: pdf task is empty");
@@ -318,8 +319,7 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     Toast.makeText(context, "Successfully added file!", Toast.LENGTH_SHORT).show();
-                                                    //callback.update();
-                                                    //Log.d("sba", "onComplete: noooooo");
+                                                    callback.update();
                                                     dismiss();
                                                 } else {
                                                     Toast.makeText(context, "Something Went Wrong!", Toast.LENGTH_SHORT).show();
