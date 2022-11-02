@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddQuestionActivity">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textSize="26sp"
+            android:textAlignment="center"
+            android:text="Title" />
+
+
+        <EditText
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter the question.. "
+            android:padding="20dp"
+            android:inputType="textPersonName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+                <Button
+                android:id="@+id/questionImageBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add question image (OPTIONAl)"/>
+
+            <ImageView
+                android:id="@+id/questionImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/imageplace"
+                />
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/optionA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="20dp"
+            android:hint="Enter option A"
+            android:inputType="textPersonName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/optionAImageBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add image for option A  (OPTIONal)"/>
+            <ImageView
+                android:id="@+id/optionAImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/imageplace"
+                />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/optionB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="20dp"
+            android:hint="Enter option B "
+            android:inputType="textPersonName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/optionBImageBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add image for option B  (OPTIONAl)"/>
+            <ImageView
+                android:id="@+id/optionBImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/imageplace"
+                />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/optionC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="20dp"
+            android:hint="Enter option C"
+            android:inputType="textPersonName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/optionCImageBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add image for option C  (OPTIONAl)"/>
+            <ImageView
+                android:id="@+id/optionCImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/imageplace"
+                />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/optionD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="20dp"
+            android:hint="Enter option D"
+            android:inputType="textPersonName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/optionDImageBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add image for option D  (OPTIONAl)"/>
+            <ImageView
+                android:id="@+id/optionDImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/imageplace"
+                />
+        </LinearLayout>
+
+<!--        <Spinner-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:id="@+id/spinner"-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            />-->
+        <EditText
+            android:id="@+id/correctOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:hint="Correct Option A/B/C/D"/>
+
+
+
+
+        <Button
+            android:id="@+id/addQuestionBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:text="Add Question"
+            android:textSize="20sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="4dp">
+
+            <TextView
+                android:id="@+id/questionsAdded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginVertical="10dp"
+                android:text="Questions added:"
+
+                android:textSize="24sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_addedQuestions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginVertical="10dp"
+                android:textSize="24sp"
+                />
+        </LinearLayout>
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginVertical="10dp"
+            android:text="Submit Test "
+            android:textSize="20sp"/>
+
+
+    </LinearLayout>
+</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

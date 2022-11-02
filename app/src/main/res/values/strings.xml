@@ -26,5 +26,6 @@
     <string name="enter_file_name">Enter File Name</string>
     <string name="enter_pdf_url">Enter PDF URL</string>
     <string name="bookmark">Bookmark</string>
+    <string name="add_test">Add Test</string>
 
 </resources>

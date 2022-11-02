@@ -21,7 +21,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sangharshAdmin.book.BuildConfig;
+import com.google.android.datatransport.BuildConfig;
 import com.sangharshAdmin.book.PDFDisplay;
 import com.sangharshAdmin.book.R;
 import com.sangharshAdmin.book.SangharshBooks;

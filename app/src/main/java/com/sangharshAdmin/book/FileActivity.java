@@ -90,7 +90,7 @@ public class FileActivity extends AppCompatActivity implements DirectoryChangeLi
                     }else{
                         //new directory created.
                         hotFixDontAsk=1;
-                        directory = new Directory(1,new ArrayList<>(),new ArrayList<>(),sangharshBooks.getPath());
+                        directory = new Directory(1,new ArrayList<>(),new ArrayList<>(),sangharshBooks.getPath(),new ArrayList<>());
                         directoryAdapter = new DirectoryAdapter(FileActivity.this,directory,(SangharshBooks) getApplication(),FileActivity.this);
                         FirebaseFirestore.getInstance().collection("directory").document().set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

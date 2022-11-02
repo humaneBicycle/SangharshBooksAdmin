@@ -32,7 +32,7 @@ import com.downloader.OnProgressListener;
 import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
-import com.sangharshAdmin.book.BuildConfig;
+import com.google.android.datatransport.BuildConfig;
 import com.sangharshAdmin.book.FileActivity;
 import com.sangharshAdmin.book.PDFDisplay;
 import com.sangharshAdmin.book.R;

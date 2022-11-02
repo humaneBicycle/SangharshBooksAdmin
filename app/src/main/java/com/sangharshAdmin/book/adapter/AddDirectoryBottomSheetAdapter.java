@@ -39,6 +39,7 @@ import com.sangharshAdmin.book.BannerDeleteActivity;
 import com.sangharshAdmin.book.DirectoryChangeListener;
 import com.sangharshAdmin.book.R;
 import com.sangharshAdmin.book.SangharshBooks;
+import com.sangharshAdmin.book.TestActivity;
 import com.sangharshAdmin.book.model.Directory;
 import com.sangharshAdmin.book.model.FileModel;
 import com.sangharshAdmin.book.model.PDFModel;
@@ -67,6 +68,7 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
         this.activity=activity;
         this.callback = callback;
     }
+//    public AddDirectoryBottomSheetAdapter(){}
 
     @SuppressLint("MissingInflatedId")
     @Nullable
@@ -112,7 +114,7 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
         v.findViewById(R.id.add_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(context,TestActivity.kt));
+                startActivity(new Intent(context, TestActivity.class));
             }
         });
 
@@ -182,7 +184,7 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
                                         ArrayList<FileModel> fileModels = new ArrayList<>();
                                         FileModel fileModel = new FileModel(fileName.getText().toString(),sangharshBooks.getPath()+"\\"+fileName.getText().toString());
                                         fileModels.add(fileModel);
-                                        directory = new Directory(0,fileModels,new ArrayList<>(),sangharshBooks.getPath());
+                                        directory = new Directory(0,fileModels,new ArrayList<>(),sangharshBooks.getPath(),new ArrayList<>());
                                         //directory.getFiles().add(fileModel);
                                         FirebaseFirestore.getInstance().collection("directory").document().set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -445,7 +447,10 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
         if(requestCode==PICK_PDF_REQUEST && data!=null && data.getData()!=null){
             mPdfFile = data.getData();
             Log.d("sba activity res", "onActivityResult: "+data.toString()+" uri "+ mPdfFile);
+            Toast.makeText(context, "Added pdf", Toast.LENGTH_SHORT).show();
 
+        }else{
+            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 }
