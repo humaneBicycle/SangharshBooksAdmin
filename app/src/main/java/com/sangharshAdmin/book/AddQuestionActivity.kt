@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.sangharshAdmin.book.model.Directory
 import com.sangharshAdmin.book.model.Question
+import com.sangharshAdmin.book.model.ShortTest
 import com.sangharshAdmin.book.model.Test
 import com.squareup.picasso.Picasso
 import org.checkerframework.checker.units.qual.Length
@@ -254,13 +255,20 @@ class AddQuestionActivity : AppCompatActivity() {
             newPD.setTitle("Uploading Test")
             newPD.setMessage("Uploading Test")
             newPD.setCancelable(false)
+            newPD.show()
             FirebaseFirestore.getInstance().collection("directory")
                 .whereEqualTo("path", (sangharshBooks as SangharshBooks).path).get().addOnCompleteListener {
                     if (it.isSuccessful) {
                         if(it.result.toObjects(Directory::class.java).size==1) {
                             val id = it.result.documents[0].id
                             val directory = it.result.toObjects(Directory::class.java)[0]
-                            directory.tests.add(test)
+                            val shorty = ShortTest()
+                            shorty.id = test.id;
+                            shorty.title = test.testTitle;
+                            shorty.numQuestion = test.questions.size
+                            //Todo set Time and image for test
+                            shorty.description = test.testDescription
+                            directory.tests.add(shorty)
                             FirebaseFirestore.getInstance().collection("directory").document(id)
                                 .set(directory)
                                 .addOnCompleteListener { task ->
