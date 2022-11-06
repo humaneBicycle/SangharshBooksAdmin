@@ -6,6 +6,25 @@ public class Test {
     String testTitle;
     String testDescription;
     String id;
+    int timeAllowed;
+    int noOfQuestion;
+
+    public int getNoOfQuestion() {
+        return noOfQuestion;
+    }
+
+    public void setNoOfQuestion(int noOfQuestion) {
+        this.noOfQuestion = noOfQuestion;
+    }
+
+
+    public int getTimeAllowed() {
+        return timeAllowed;
+    }
+
+    public void setTimeAllowed(int timeAllowed) {
+        this.timeAllowed = timeAllowed;
+    }
 
     public String getId() {
         return id;

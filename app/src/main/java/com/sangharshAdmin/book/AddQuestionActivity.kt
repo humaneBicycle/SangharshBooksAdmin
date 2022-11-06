@@ -67,8 +67,10 @@ class AddQuestionActivity : AppCompatActivity() {
 
         val titleTV = findViewById<TextView>(R.id.titleTV)
         val title = intent.getStringExtra("title")
-        val testDescription =intent.getStringExtra("description")
         titleTV.text = title
+        val testDescription =intent.getStringExtra("description")
+        val timeAllowed =Integer.parseInt(intent.getStringExtra("timer").toString())
+
         val addQuestion = findViewById<Button>(R.id.addQuestionBtn)
          question = findViewById<EditText>(R.id.question)
          optionA = findViewById<EditText>(R.id.optionA)
@@ -104,8 +106,12 @@ class AddQuestionActivity : AppCompatActivity() {
                 val questionTxt = question.text.toString()
                 test.testTitle = title
                 test.testDescription = testDescription
+                test.timeAllowed = timeAllowed
+                test.noOfQuestion = addedQuestionsCount+1
+                Log.i("adi", "time : ${test.timeAllowed.toString()}")
+                Log.i("adi", "no of ques: ${test.noOfQuestion.toString()}")
 
-                currentQestion.question = questionTxt;
+                currentQestion.question = questionTxt
 
                 if (!optionA.text.toString().isEmpty())
                     currentQestion.option1 = optionA.text.toString();
@@ -185,7 +191,21 @@ class AddQuestionActivity : AppCompatActivity() {
                     })
                 }
 
-                currentQestion.correctOption = correctOption.text.toString()
+                if(correctOption.text.equals("A")){
+                    currentQestion.correctOption = 0
+                }
+                else if(correctOption.text.equals("B")){
+
+                }
+                else if(correctOption.text.equals("C")){
+
+                }
+                else if(correctOption.text.equals("D")){
+
+                }
+                else{
+                    Toast.makeText(this,"Invalid Option Seleted",Toast.LENGTH_LONG).show()
+                }
                 if (pendingImagUploads == 0){
                     saveCurrentQuestion()
                 }
