@@ -26,6 +26,7 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var  optionCImage :ImageView
     lateinit var   optionDImage:ImageView
     lateinit var  spinner : Spinner
+    var   correctOption : Int = -2
     var  questionPath :Uri? = null
     var  optionApath :Uri? = null
     var  optionBpath :Uri? = null
@@ -92,6 +93,17 @@ class AddQuestionActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this,
             android.R.layout.simple_spinner_item, items)
         spinner.adapter = adapter
+        spinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View, position: Int, id: Long) {
+                correctOption = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                Toast.makeText(this@AddQuestionActivity,"Select the correct option",Toast.LENGTH_LONG).show()
+            }
+        }
 
 
 
@@ -190,19 +202,8 @@ class AddQuestionActivity : AppCompatActivity() {
                     })
                 }
 
-                spinner.onItemSelectedListener = object :
-                    AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>,
-                                                view: View, position: Int, id: Long) {
-                       currentQestion.correctOption = position
-                    }
+                currentQestion.correctOption = correctOption
 
-                    override fun onNothingSelected(parent: AdapterView<*>) {
-                        Toast.makeText(this@AddQuestionActivity,"Select the correct option",Toast.LENGTH_LONG).show()
-                    }
-                }
-
-                Log.i("correct option $addedQuestionsCount", currentQestion.correctOption.toString())
 
 
 //                if(correctOption.text.equals("A")){
@@ -314,6 +315,7 @@ class AddQuestionActivity : AppCompatActivity() {
                                 }
                         }else{
                             Toast.makeText(this,"DataBaseError",Toast.LENGTH_LONG).show()
+                            newPD.dismiss()
                         }
 
                     }
