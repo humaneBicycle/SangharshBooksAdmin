@@ -9,21 +9,33 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.sangharshAdmin.book.R.*
 import com.squareup.picasso.Picasso
 
 class TestActivity : AppCompatActivity() {
     lateinit var chooseTestBannerBtn:Button
     lateinit var testBannerIV:ImageView
+    lateinit var testTitle:EditText
+    lateinit var progressBar:ProgressBar
+    lateinit var testDescription:EditText
+    lateinit var createTestBtn:Button
+
+    lateinit var timeAllowed:EditText
     var  testBannerImg : Uri? = null
+    var testBannerURL:Uri? = null
+    lateinit var testTitleTxt:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_test)
-        val createTestBtn = findViewById<Button>(id.createTestBtn)
-        val testTitle = findViewById<EditText>(id.testTitle)
-        val testDescription = findViewById<EditText>(id.testDescription)
-        val timeAllowed = findViewById<EditText>(id.timeAllowed)
+         createTestBtn = findViewById<Button>(id.createTestBtn)
+         testTitle = findViewById<EditText>(id.testTitle)
+        testDescription = findViewById<EditText>(id.testDescription)
+        timeAllowed = findViewById<EditText>(id.timeAllowed)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         chooseTestBannerBtn = findViewById(R.id.chooseTestBannerBtn)
         chooseTestBannerBtn.setOnClickListener(View.OnClickListener {
@@ -36,22 +48,64 @@ class TestActivity : AppCompatActivity() {
             )
         })
 
+        testTitleTxt = testTitle.text.toString()
+        Log.i("banner fo if", testBannerImg.toString())
+
         createTestBtn.setOnClickListener(View.OnClickListener {
-            if(!testTitle.text.isEmpty() && !testDescription.text.isEmpty()) {
-                Log.i("TestActivity", "Test not empty")
-                val intent = Intent(this@TestActivity, AddQuestionActivity::class.java)
-                val title = testTitle.text.toString()
-                val testDescription = testDescription.text.toString()
-                val timeAllowed = timeAllowed.text.toString()
-                intent.putExtra("title",title)
-                intent.putExtra("description",testDescription)
-                intent.putExtra("timer",timeAllowed)
-                startActivity(intent)
+            if(!testTitle.text.isEmpty() && !testDescription.text.isEmpty()&& !timeAllowed.text.isEmpty() && testBannerImg!= null) {
+                uploadTestWithImage()
+                Log.i("adi", "uploading test with image")
+            }
+            else if(!testTitle.text.isEmpty() && !testDescription.text.isEmpty()&& !timeAllowed.text.isEmpty() && testBannerImg==null){
+                uploadTest()
+                Log.i("adi", "uploading test without image")
+
             }
             else{
-                Toast.makeText(this,"Please fill the above fields",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Please fill all the field",Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun uploadTest() {
+        val intent = Intent(this@TestActivity, AddQuestionActivity::class.java)
+        val title = testTitle.text.toString()
+        val testDescription = testDescription.text.toString()
+        val timeAllowed = timeAllowed.text.toString()
+        intent.putExtra("title",title)
+        intent.putExtra("description",testDescription)
+        intent.putExtra("timer",timeAllowed)
+        startActivity(intent)
+    }
+
+    private fun uploadTestWithImage() {
+        progressBar.visibility = View.VISIBLE
+        createTestBtn.isEnabled = false
+
+        val quesImageRef = FirebaseStorage.getInstance().reference.child("${testTitleTxt}/testbanner.png")
+        quesImageRef.putFile(testBannerImg!!).addOnSuccessListener {
+            quesImageRef.downloadUrl
+                .addOnSuccessListener {
+                    testBannerURL = it
+                    val intent = Intent(this@TestActivity, AddQuestionActivity::class.java)
+                    val title = testTitle.text.toString()
+                    val testDescription = testDescription.text.toString()
+                    val timeAllowed = timeAllowed.text.toString()
+                    intent.putExtra("title",title)
+                    intent.putExtra("description",testDescription)
+                    intent.putExtra("timer",timeAllowed)
+                    intent.putExtra("testBannerUrl",testBannerURL.toString())
+                    startActivity(intent)
+                    progressBar.visibility = View.GONE
+                    Log.i("testbanner", "url generated successfully $testBannerURL ")
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this,"Failed uploading image!",Toast.LENGTH_LONG).show()
+                    progressBar.visibility = View.GONE
+                    createTestBtn.isEnabled = true
+
+                }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -62,7 +116,11 @@ class TestActivity : AppCompatActivity() {
             Picasso.get()
                 .load(data.data)
                 .into(testBannerIV)
-
+            Log.i("adi", "getting the data $testBannerImg")
+        }
+        else if(data == null){
+            testBannerImg = null
+            Log.i("adi", "data is null")
 
         }
     }

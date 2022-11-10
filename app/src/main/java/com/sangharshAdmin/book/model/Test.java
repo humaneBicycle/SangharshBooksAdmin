@@ -8,6 +8,18 @@ public class Test {
     String id;
     int timeAllowed;
     int noOfQuestion;
+    String testBannerUrl;
+
+    public String getTestBannerUrl() {
+        return testBannerUrl;
+    }
+
+    public void setTestBannerUrl(String testBannerUrl) {
+        this.testBannerUrl = testBannerUrl;
+
+
+    }
+
 
     public int getNoOfQuestion() {
         return noOfQuestion;

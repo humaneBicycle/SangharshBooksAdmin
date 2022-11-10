@@ -2,7 +2,6 @@ package com.sangharshAdmin.book
 
 import android.app.Application
 import android.app.ProgressDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.sangharshAdmin.book.model.Directory
@@ -19,7 +17,6 @@ import com.sangharshAdmin.book.model.Question
 import com.sangharshAdmin.book.model.ShortTest
 import com.sangharshAdmin.book.model.Test
 import com.squareup.picasso.Picasso
-import org.checkerframework.checker.units.qual.Length
 
 
 class AddQuestionActivity : AppCompatActivity() {
@@ -28,11 +25,13 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var  optionBImage :ImageView
     lateinit var  optionCImage :ImageView
     lateinit var   optionDImage:ImageView
+    lateinit var  spinner : Spinner
     var  questionPath :Uri? = null
     var  optionApath :Uri? = null
     var  optionBpath :Uri? = null
     var  optionCpath :Uri? = null
     var  optionDpath :Uri? = null
+    var testBannerUrl:String? = null
     val PICK_IMAGE = 1
     var test = Test();
     var addedQuestionsCount = 0
@@ -44,9 +43,7 @@ class AddQuestionActivity : AppCompatActivity() {
     var isOptionDImageSelected = false
     var url:String = ""
 
-    var currentQestion = Question();
-
-
+    var currentQestion = Question()
     lateinit var sangharshBooks : Application
 
     var pendingImagUploads = 0;
@@ -63,21 +60,20 @@ class AddQuestionActivity : AppCompatActivity() {
             .id;
         test.id = testId;
         test.questions = ArrayList<Question>();
-
-
+        testBannerUrl = intent.getStringExtra("testBannerUrl")
+        test.testBannerUrl = testBannerUrl
         val titleTV = findViewById<TextView>(R.id.titleTV)
         val title = intent.getStringExtra("title")
         titleTV.text = title
         val testDescription =intent.getStringExtra("description")
         val timeAllowed =Integer.parseInt(intent.getStringExtra("timer").toString())
-
         val addQuestion = findViewById<Button>(R.id.addQuestionBtn)
          question = findViewById<EditText>(R.id.question)
          optionA = findViewById<EditText>(R.id.optionA)
          optionB = findViewById<EditText>(R.id.optionB)
          optionC = findViewById<EditText>(R.id.optionC)
          optionD = findViewById<EditText>(R.id.optionD)
-         correctOption = findViewById<EditText>(R.id.correctOption)
+//         correctOption = findViewById<EditText>(R.id.correctOption)
          addedQuestion = findViewById<TextView>(R.id.tv_addedQuestions)
         val  questionImageBtn = findViewById<Button>(R.id.questionImageBtn)
         val  optionAImageBtn = findViewById<Button>(R.id.optionAImageBtn)
@@ -89,20 +85,29 @@ class AddQuestionActivity : AppCompatActivity() {
         optionBImage = findViewById<ImageView>(R.id.optionBImage)
         optionCImage = findViewById<ImageView>(R.id.optionCImage)
         optionDImage= findViewById<ImageView>(R.id.optionDImage)
+        spinner = findViewById(R.id.spinner)
+
+
+        val items = arrayOf("A", "B", "C", "D")
+        val adapter = ArrayAdapter(this,
+            android.R.layout.simple_spinner_item, items)
+        spinner.adapter = adapter
+
+
+
+
+
 
 
 
         addQuestion.setOnClickListener(View.OnClickListener {
-
-            currentQestion = Question();
-
+            currentQestion = Question()
             if((question.text.isNotEmpty() || questionPath != null)
                 && (optionA.text.isNotEmpty() || optionApath != null)
                 && (optionB.text.isNotEmpty() || optionBpath != null)
                 && (optionC.text.isNotEmpty() || optionCpath != null)
                 && (optionD.text.isNotEmpty() || optionDpath != null)
             ){
-
                 val questionTxt = question.text.toString()
                 test.testTitle = title
                 test.testDescription = testDescription
@@ -135,8 +140,6 @@ class AddQuestionActivity : AppCompatActivity() {
                         isQuesImgSelected = false
                     })
                 }
-
-
                 if(optionApath!=null){
                     uploadImage(optionApath!!, "optionA", OnSuccessListener {
                         url = it.toString();
@@ -148,7 +151,6 @@ class AddQuestionActivity : AppCompatActivity() {
                         isOptionAImageSelected = false
                     })
                 }
-
                 if(optionBpath!=null){
                     uploadImage(optionBpath!!, "optionB", OnSuccessListener {
                         currentQestion.option2ImgUrl = it.toString();
@@ -159,9 +161,6 @@ class AddQuestionActivity : AppCompatActivity() {
                         hideProgress()
                         isOptionBImageSelected = false
                     })
-
-
-
                 }
 
                 if(optionCpath!=null){
@@ -191,21 +190,36 @@ class AddQuestionActivity : AppCompatActivity() {
                     })
                 }
 
-                if(correctOption.text.equals("A")){
-                    currentQestion.correctOption = 0
-                }
-                else if(correctOption.text.equals("B")){
+                spinner.onItemSelectedListener = object :
+                    AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>,
+                                                view: View, position: Int, id: Long) {
+                       currentQestion.correctOption = position
+                    }
 
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        Toast.makeText(this@AddQuestionActivity,"Select the correct option",Toast.LENGTH_LONG).show()
+                    }
                 }
-                else if(correctOption.text.equals("C")){
 
-                }
-                else if(correctOption.text.equals("D")){
+                Log.i("correct option $addedQuestionsCount", currentQestion.correctOption.toString())
 
-                }
-                else{
-                    Toast.makeText(this,"Invalid Option Seleted",Toast.LENGTH_LONG).show()
-                }
+
+//                if(correctOption.text.equals("A")){
+//                    currentQestion.correctOption = 0
+//                }
+//                else if(correctOption.text.equals("B")){
+//
+//                }
+//                else if(correctOption.text.equals("C")){
+//
+//                }
+//                else if(correctOption.text.equals("D")){
+//
+//                }
+//                else{
+//                    Toast.makeText(this,"Invalid Option Seleted",Toast.LENGTH_LONG).show()
+//                }
                 if (pendingImagUploads == 0){
                     saveCurrentQuestion()
                 }
@@ -213,14 +227,7 @@ class AddQuestionActivity : AppCompatActivity() {
             else{
                 Toast.makeText(this,"Fill all the values and try again!",Toast.LENGTH_SHORT).show()
             }
-
-
-
-
-
-
         })
-
         // Adding images
         questionImageBtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -324,7 +331,6 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var optionB: EditText
     lateinit var optionC: EditText
     lateinit var optionD: EditText
-    lateinit var correctOption: EditText
 
     private fun saveCurrentQuestion() {
         test.questions.add(currentQestion);
@@ -336,7 +342,6 @@ class AddQuestionActivity : AppCompatActivity() {
         optionB.text = null
         optionC.text = null
         optionD.text = null
-        correctOption.text = null
     }
 
     private fun hideProgress() {
