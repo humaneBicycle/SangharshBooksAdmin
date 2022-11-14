@@ -25,6 +25,23 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var  optionBImage :ImageView
     lateinit var  optionCImage :ImageView
     lateinit var   optionDImage:ImageView
+    lateinit var   questionIV:ImageView
+    lateinit var   optionAIV:ImageView
+    lateinit var   optionBIV:ImageView
+    lateinit var   optionCIV:ImageView
+    lateinit var   optionDIV:ImageView
+    lateinit var   quesDrawerGrid:GridLayout
+    lateinit var   quesGridLL:LinearLayout
+    lateinit var   updateQuesBtn:TextView
+    lateinit var   backGridbtn:TextView
+    lateinit var   questionET:EditText
+    lateinit var   optionAET:EditText
+    lateinit var   optionBET:EditText
+    lateinit var   optionCET:EditText
+    lateinit var   optionDET:EditText
+    lateinit var   addQuestionLL:LinearLayout
+    lateinit var   btnsInGridLL:LinearLayout
+    lateinit var tv : View
     lateinit var  spinner : Spinner
     var   correctOption : Int = -2
     var  questionPath :Uri? = null
@@ -76,17 +93,33 @@ class AddQuestionActivity : AppCompatActivity() {
          optionD = findViewById<EditText>(R.id.optionD)
 //         correctOption = findViewById<EditText>(R.id.correctOption)
          addedQuestion = findViewById<TextView>(R.id.tv_addedQuestions)
-        val  questionImageBtn = findViewById<Button>(R.id.questionImageBtn)
-        val  optionAImageBtn = findViewById<Button>(R.id.optionAImageBtn)
-        val  optionBBImageBtn = findViewById<Button>(R.id.optionBImageBtn)
-        val  optionCImageBtn = findViewById<Button>(R.id.optionCImageBtn)
-        val  optionDImageBtn = findViewById<Button>(R.id.optionDImageBtn)
+//        val  questionImageBtn = findViewById<Button>(R.id.questionImageBtn)
+//        val  optionAImageBtn = findViewById<Button>(R.id.optionAImageBtn)
+//        val  optionBBImageBtn = findViewById<Button>(R.id.optionBImageBtn)
+//        val  optionCImageBtn = findViewById<Button>(R.id.optionCImageBtn)
+//        val  optionDImageBtn = findViewById<Button>(R.id.optionDImageBtn)
         questionImage  = findViewById<ImageView>(R.id.questionImage)
         optionAImage = findViewById<ImageView>(R.id.optionAImage)
         optionBImage = findViewById<ImageView>(R.id.optionBImage)
         optionCImage = findViewById<ImageView>(R.id.optionCImage)
         optionDImage= findViewById<ImageView>(R.id.optionDImage)
         spinner = findViewById(R.id.spinner)
+        quesDrawerGrid = findViewById(R.id.quesDrawerGrid)
+        quesGridLL = findViewById(R.id.quesGridLL)
+        addQuestionLL = findViewById(R.id.addQuestionLL)
+        updateQuesBtn = findViewById(R.id.updateQuesBtn)
+        backGridbtn = findViewById(R.id.backGridbtn)
+        btnsInGridLL = findViewById(R.id.btnsInGridLL)
+        questionIV = findViewById(R.id.questionIV)
+        optionAIV = findViewById(R.id.optionAIV)
+        optionBIV = findViewById(R.id.optionBIV)
+        optionCIV = findViewById(R.id.optionCIV)
+        optionDIV = findViewById(R.id.optionDIV)
+        questionET = findViewById(R.id.questionET)
+        optionAET = findViewById(R.id.optionAET)
+        optionBET = findViewById(R.id.optionBET)
+        optionCET = findViewById(R.id.optionCET)
+        optionDET = findViewById(R.id.optionDET)
 
 
         val items = arrayOf("A", "B", "C", "D")
@@ -103,13 +136,9 @@ class AddQuestionActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {
                 Toast.makeText(this@AddQuestionActivity,"Select the correct option",Toast.LENGTH_LONG).show()
             }
+
+
         }
-
-
-
-
-
-
 
 
         addQuestion.setOnClickListener(View.OnClickListener {
@@ -125,10 +154,19 @@ class AddQuestionActivity : AppCompatActivity() {
                 test.testDescription = testDescription
                 test.timeAllowed = timeAllowed
                 test.noOfQuestion = addedQuestionsCount+1
-                Log.i("adi", "time : ${test.timeAllowed.toString()}")
-                Log.i("adi", "no of ques: ${test.noOfQuestion.toString()}")
 
                 currentQestion.question = questionTxt
+                 val index = addedQuestionsCount+1
+                tv = layoutInflater.inflate(R.layout.question_grid_textview,null)
+                tv.tag = index
+                quesDrawerGrid.addView(tv)
+                quesDrawerGrid.findViewWithTag<TextView>(index).text= index.toString()
+                tv.setOnClickListener(View.OnClickListener {
+                    onClickEventInGrid(index)
+
+                })
+
+
 
                 if (!optionA.text.toString().isEmpty())
                     currentQestion.option1 = optionA.text.toString();
@@ -204,23 +242,6 @@ class AddQuestionActivity : AppCompatActivity() {
 
                 currentQestion.correctOption = correctOption
 
-
-
-//                if(correctOption.text.equals("A")){
-//                    currentQestion.correctOption = 0
-//                }
-//                else if(correctOption.text.equals("B")){
-//
-//                }
-//                else if(correctOption.text.equals("C")){
-//
-//                }
-//                else if(correctOption.text.equals("D")){
-//
-//                }
-//                else{
-//                    Toast.makeText(this,"Invalid Option Seleted",Toast.LENGTH_LONG).show()
-//                }
                 if (pendingImagUploads == 0){
                     saveCurrentQuestion()
                 }
@@ -228,9 +249,24 @@ class AddQuestionActivity : AppCompatActivity() {
             else{
                 Toast.makeText(this,"Fill all the values and try again!",Toast.LENGTH_SHORT).show()
             }
+
+
+
+
         })
-        // Adding images
-        questionImageBtn.setOnClickListener(View.OnClickListener {
+
+        backGridbtn.setOnClickListener(View.OnClickListener {
+            addQuestionLL.visibility = View.VISIBLE
+            quesGridLL.visibility = View.GONE
+            btnsInGridLL.visibility = View.GONE
+
+        })
+        updateQuesBtn.setOnClickListener(View.OnClickListener {
+
+        })
+
+//         Adding images
+        questionImage.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -239,7 +275,7 @@ class AddQuestionActivity : AppCompatActivity() {
                 0
             )
         })
-        optionAImageBtn.setOnClickListener(View.OnClickListener {
+        optionAImage.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -248,7 +284,7 @@ class AddQuestionActivity : AppCompatActivity() {
                 1
             )
         })
-        optionBBImageBtn.setOnClickListener(View.OnClickListener {
+        optionBImage.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -257,7 +293,7 @@ class AddQuestionActivity : AppCompatActivity() {
                 2
             )
         })
-        optionCImageBtn.setOnClickListener(View.OnClickListener {
+        optionCImage.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -266,7 +302,7 @@ class AddQuestionActivity : AppCompatActivity() {
                 3
             )
         })
-        optionDImageBtn.setOnClickListener(View.OnClickListener {
+        optionDImage.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -278,7 +314,6 @@ class AddQuestionActivity : AppCompatActivity() {
 
 
         findViewById<Button>(R.id.submitBtn).setOnClickListener {
-            //TODO add progress dialog
             val newPD = ProgressDialog(this)
             newPD.setTitle("Uploading Test")
             newPD.setMessage("Uploading Test")
@@ -294,7 +329,6 @@ class AddQuestionActivity : AppCompatActivity() {
                             shorty.id = test.id;
                             shorty.title = test.testTitle;
                             shorty.numQuestion = test.questions.size
-                            //Todo set Time and image for test
                             shorty.description = test.testDescription
                             directory.tests.add(shorty)
                             FirebaseFirestore.getInstance().collection("directory").document(id)
@@ -323,6 +357,31 @@ class AddQuestionActivity : AppCompatActivity() {
         }
 
 
+
+
+    }
+
+    private fun onClickEventInGrid(index: Int) {
+        addQuestionLL.visibility = View.GONE
+        quesGridLL.visibility = View.VISIBLE
+        btnsInGridLL.visibility = View.VISIBLE
+        //TODO updatarion for images
+        Log.i("question saved", test.questions[index-1].question )
+        if(question.text!=null){
+            questionET.setText( test.questions[index-1].question)
+        }
+        if(optionA.text!=null){
+            optionAET.setText( test.questions[index-1].option1)
+        }
+        if(optionB.text!=null){
+            optionBET.setText( test.questions[index-1].option2)
+        }
+        if(optionC.text!=null){
+            optionCET.setText( test.questions[index-1].option3)
+        }
+        if(optionD.text!=null){
+            optionDET.setText( test.questions[index-1].option4)
+        }
 
 
     }

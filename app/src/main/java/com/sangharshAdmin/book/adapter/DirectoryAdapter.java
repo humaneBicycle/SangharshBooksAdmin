@@ -41,6 +41,7 @@ import com.sangharshAdmin.book.StorageHelper;
 import com.sangharshAdmin.book.UIUpdateHomeFrag;
 import com.sangharshAdmin.book.model.Directory;
 import com.sangharshAdmin.book.model.PDFModel;
+import com.sangharshAdmin.book.model.Test;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,39 +59,40 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     final int TYPE_FILE = 0;
     final int TYPE_PDF = 1;
+    final int TYPE_TEST = 2;
 
     public DirectoryAdapter(Context c, Directory directory, SangharshBooks sangharshBooks,UIUpdateHomeFrag uiUpdateHomeFrag){
         this.context=c;
         this.directory=directory;
         this.sangharshBooks = sangharshBooks;
         this.uiUpdaterHomeFrag = uiUpdateHomeFrag;
-        //this.activity = activity;
+//        this.activity = activity;
 
-        inflateColors();
-        inflateLayers();
+//        inflateColors();
+//        inflateLayers();
     }
-
-    private void inflateColors(){
-        if(colors==null) {
-            colors = new ArrayList<>();
-        }
-        colors.add(R.color.my_green);
-        colors.add(R.color.my_blue);
-        colors.add(R.color.my_red);
-        colors.add(R.color.my_yellow);
-        colors.add(R.color.my_skyblue);
-
-//        colors.add(R.color.my_purple);
-    }
-
-    private void inflateLayers(){
-        if(layers==null) {
-            layers = new ArrayList<>();
-        }
-        layers.add(R.drawable.ic_layer_1);
-        layers.add(R.drawable.ic_layer_2);
-        layers.add(R.drawable.ic_layer_3);
-    }
+//
+//    private void inflateColors(){
+//        if(colors==null) {
+//            colors = new ArrayList<>();
+//        }
+//        colors.add(R.color.my_green);
+//        colors.add(R.color.my_blue);
+//        colors.add(R.color.my_red);
+//        colors.add(R.color.my_yellow);
+//        colors.add(R.color.my_skyblue);
+//
+////        colors.add(R.color.my_purple);
+//    }
+//
+//    private void inflateLayers(){
+//        if(layers==null) {
+//            layers = new ArrayList<>();
+//        }
+//        layers.add(R.drawable.ic_layer_1);
+//        layers.add(R.drawable.ic_layer_2);
+//        layers.add(R.drawable.ic_layer_3);
+//    }
 
     @NonNull
     @Override
@@ -98,15 +100,34 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if(viewType == TYPE_FILE){
             View view = LayoutInflater.from(context).inflate(R.layout.file_item,new LinearLayout(context),false);
             return new MyViewHolder(view);
-        }else{
+        }else if(viewType==TYPE_PDF){
             View view = LayoutInflater.from(context).inflate(R.layout.pdf_item,new LinearLayout(context),false);
             return new PDFVIewHolder(view);
 
+        }else {
+            View view = LayoutInflater.from(context).inflate(R.layout.test_item,new LinearLayout(context),false);
+            return new TestHolder(view);
         }
 
 //        View view = LayoutInflater.from(context).inflate(R.layout.file_item,null);
 //        return new MyViewHolder(view);
 
+    }
+
+
+    public class TestHolder extends RecyclerView.ViewHolder{
+        TextView fileNameTextView;
+        CardView fileBg;
+        LinearLayout linearLayout;
+        ImageView fileItemBG;
+
+        public TestHolder(View itemView){
+            super(itemView);
+            fileNameTextView = itemView.findViewById(R.id.book_item_name);
+            fileBg=itemView.findViewById(R.id.background_file_item);
+            linearLayout = itemView.findViewById(R.id.file_item_background);
+            fileItemBG = itemView.findViewById(R.id.book_item_holder_imageview);
+        }
     }
 
     @Override
@@ -116,18 +137,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if(holder instanceof MyViewHolder){
             //it is a file
             ((MyViewHolder) holder).fileNameTextView.setText(directory.getFiles().get(position).getName());
-            int randForColor = new Random().nextInt(colors.size());
-            ((MyViewHolder) holder).linearLayout.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(colors.get(randForColor))));
-            colors.remove(randForColor);
-            if(colors.size()==0){
-                inflateColors();
-            }
-            int randForLayer = new Random().nextInt(layers.size());
-            ((MyViewHolder) holder).fileItemBG.setBackground(context.getResources().getDrawable(layers.get(randForLayer)));
-            layers.remove(randForLayer);
-            if(layers.size()==0){
-                inflateLayers();
-            }
+
 
             ((MyViewHolder) holder).linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,7 +161,7 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
 
         }
-        if(holder instanceof PDFVIewHolder){
+        else if(holder instanceof PDFVIewHolder){
             int index = position-directory.getFiles().size();
 
 
@@ -165,15 +175,6 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
-            int randForColor = new Random().nextInt(colors.size());
-            ((PDFVIewHolder) holder).llBG.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(colors.get(randForColor))));
-            Drawable drawable=context.getResources().getDrawable(R.drawable.tiny_stroke);
-            drawable.setTint(context.getResources().getColor(colors.get(randForColor)));
-            ((PDFVIewHolder) holder).relativeLayoutBG.setBackgroundDrawable(drawable);
-            colors.remove(randForColor);
-            if(colors.size()==0){
-                inflateColors();
-            }
             ((PDFVIewHolder) holder).relativeLayoutBG.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -476,6 +477,13 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             //TODO set on click listeners. if file not available offline, download it.
 
+        }
+        else if (holder instanceof TestHolder){
+            //Todo: Add options of edit and delete tests
+            TestHolder testHolder = (TestHolder) holder;
+            int index = position - directory.getFiles().size() - directory.getPdfModels().size();
+
+            testHolder.fileNameTextView.setText(directory.getTests().get(index).getTitle());
         }
     }
     private void getAdvPdf(RecyclerView.ViewHolder holder,int index){

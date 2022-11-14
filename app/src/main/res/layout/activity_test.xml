@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1E1E1E"
     tools:context=".TestActivity">
 
     <ProgressBar
@@ -29,33 +30,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/testTitle"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/testTitleLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:ems="10"
-            android:hint="Enter the title of the test"
-            android:inputType="textPersonName"
-            android:padding="10dp" />
+            android:hint="Enter the test title"
+            android:textColorHint="@color/white"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/testTitle"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppinsregular"
+                android:textSize="16sp"/>
 
-        <EditText
-            android:id="@+id/testDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter the description of test"
-            android:inputType="textPersonName"
-            android:padding="10dp" />
 
-        <EditText
-            android:id="@+id/timeAllowed"
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/testDescLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:ems="10"
-            android:hint="Enter the time allowed for test(minutes) "
-            android:inputType="number"
-            android:padding="10dp" />
+            android:textColorHint="@color/white"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/testDescription"
+                android:hint="Enter the test description"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppinsregular"
+                android:textSize="16sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/timeAllowedLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/timeAllowed"
+                android:hint="Enter the time allowed"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:fontFamily="@font/poppinsregular"
+                android:textSize="16sp"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Select image for Test Banner"
-                android:textSize="18sp" />
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/chooseTestBannerBtn"
