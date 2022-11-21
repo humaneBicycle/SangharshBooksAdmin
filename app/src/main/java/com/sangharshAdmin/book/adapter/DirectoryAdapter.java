@@ -1,7 +1,9 @@
 package com.sangharshAdmin.book.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -33,6 +35,8 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.google.android.datatransport.BuildConfig;
+import com.google.gson.Gson;
+import com.sangharshAdmin.book.EditTestActivity;
 import com.sangharshAdmin.book.FileActivity;
 import com.sangharshAdmin.book.PDFDisplay;
 import com.sangharshAdmin.book.R;
@@ -42,6 +46,8 @@ import com.sangharshAdmin.book.UIUpdateHomeFrag;
 import com.sangharshAdmin.book.model.Directory;
 import com.sangharshAdmin.book.model.PDFModel;
 import com.sangharshAdmin.book.model.Test;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -482,11 +488,17 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //Todo: Add options of edit and delete tests
             TestHolder testHolder = (TestHolder) holder;
             int index = position - directory.getFiles().size() - directory.getPdfModels().size();
-
             testHolder.fileNameTextView.setText(directory.getTests().get(index).getTitle());
+            testHolder.itemView.setOnClickListener(view -> {
+                Intent i = new Intent(context, EditTestActivity.class);
+                i.putExtra("Test", new Gson().toJson(directory.getTests().get(index)));
+                context.startActivity(i);
+            });
         }
     }
     private void getAdvPdf(RecyclerView.ViewHolder holder,int index){
+
+
         ((PDFVIewHolder) holder).basicPDFViewer.setEnabled(false);
         ((PDFVIewHolder) holder).advancedPDFViewer.setEnabled(false);
         boolean b = false;
@@ -620,32 +632,25 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        if(directory.getFiles()==null && directory.getPdfModels()==null){
-            return 0;
-        }
-
-        if(directory.getFiles()==null){
-            return directory.getPdfModels().size();
-        }
-        if(directory.getPdfModels()==null){
-            return directory.getFiles().size();
-        }
-       return directory.getFiles().size()+directory.getPdfModels().size();
+        if (directory.getFiles() == null)
+            directory.setFiles(new ArrayList<>());
+        if (directory.getPdfModels() == null)
+            directory.setPdfModels(new ArrayList<>());
+        if (directory.getTests() == null)
+            directory.setPdfModels(new ArrayList<>());
+       return directory.getFiles().size()+directory.getPdfModels().size() + directory.getTests().size();
         //return directories.size();
     }
 
     @Override
     public int getItemViewType(int position){
-        //directories.size();
         if(position < directory.getFiles().size()){
             return TYPE_FILE;
-        }
-
-        if(position - directory.getFiles().size() < directory.getPdfModels().size()){
+        } else if (position < directory.getFiles().size() + directory.getPdfModels().size()){
             return TYPE_PDF;
+        } else {
+            return TYPE_TEST;
         }
-
-        return directories.size();
     }
 
 

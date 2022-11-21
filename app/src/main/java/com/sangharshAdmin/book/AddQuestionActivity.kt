@@ -41,6 +41,7 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var   optionDET:EditText
     lateinit var   addQuestionLL:LinearLayout
     lateinit var   btnsInGridLL:LinearLayout
+    lateinit var   arrayOfIndex:Array<CharSequence>
     lateinit var tv : View
     lateinit var  spinner : Spinner
     var   correctOption : Int = -2
@@ -161,24 +162,31 @@ class AddQuestionActivity : AppCompatActivity() {
                 tv.tag = index
                 quesDrawerGrid.addView(tv)
                 quesDrawerGrid.findViewWithTag<TextView>(index).text= index.toString()
+                 arrayOfIndex = arrayOf( quesDrawerGrid.findViewWithTag<TextView>(index).text)
                 tv.setOnClickListener(View.OnClickListener {
                     onClickEventInGrid(index)
-
                 })
 
 
-
-                if (!optionA.text.toString().isEmpty())
+                if (optionA.text.toString().isNotEmpty())
                     currentQestion.option1 = optionA.text.toString();
 
-                if (!optionB.text.toString().isEmpty())
+                if (optionB.text.toString().isNotEmpty())
                     currentQestion.option2 = optionB.text.toString();
 
-                if (!optionC.text.toString().isEmpty())
+                if (optionC.text.toString().isNotEmpty())
                     currentQestion.option3 = optionC.text.toString();
 
-                if (!optionD.text.toString().isEmpty())
+                if (optionD.text.toString().isNotEmpty())
                     currentQestion.option4 = optionD.text.toString();
+
+
+
+//                Log.i("before updating question $index", test.questions[index-2].question)
+//                Log.i("before updating optionA", test.questions[index-1].option1)
+//                Log.i("before updating optionB", test.questions[index-1].option2)
+//                Log.i("before updating optionC", test.questions[index-1].option3)
+//                Log.i("before updating optionD", test.questions[index-1].option4)
 
                 if(questionPath!=null){
                     uploadImage(questionPath!!, "question", OnSuccessListener {
@@ -189,6 +197,7 @@ class AddQuestionActivity : AppCompatActivity() {
                         hideProgress()
                         isQuesImgSelected = false
                     })
+//                        questionPath= null
                 }
                 if(optionApath!=null){
                     uploadImage(optionApath!!, "optionA", OnSuccessListener {
@@ -200,6 +209,7 @@ class AddQuestionActivity : AppCompatActivity() {
                         hideProgress()
                         isOptionAImageSelected = false
                     })
+//                    optionApath = null
                 }
                 if(optionBpath!=null){
                     uploadImage(optionBpath!!, "optionB", OnSuccessListener {
@@ -211,6 +221,7 @@ class AddQuestionActivity : AppCompatActivity() {
                         hideProgress()
                         isOptionBImageSelected = false
                     })
+//                    optionBpath = null
                 }
 
                 if(optionCpath!=null){
@@ -224,7 +235,7 @@ class AddQuestionActivity : AppCompatActivity() {
                         hideProgress()
                         isOptionCImageSelected = false
                     })
-
+//                    optionCpath = null
 
                 }
 
@@ -238,20 +249,19 @@ class AddQuestionActivity : AppCompatActivity() {
                         hideProgress()
                         isOptionDImageSelected = false
                     })
+//                    optionDpath = null
                 }
 
                 currentQestion.correctOption = correctOption
 
                 if (pendingImagUploads == 0){
                     saveCurrentQuestion()
+
                 }
             }
             else{
                 Toast.makeText(this,"Fill all the values and try again!",Toast.LENGTH_SHORT).show()
             }
-
-
-
 
         })
 
@@ -259,11 +269,27 @@ class AddQuestionActivity : AppCompatActivity() {
             addQuestionLL.visibility = View.VISIBLE
             quesGridLL.visibility = View.GONE
             btnsInGridLL.visibility = View.GONE
+            questionIV.visibility=View.GONE
+            optionAIV.visibility=View.GONE
+            optionBIV.visibility=View.GONE
+            optionCIV.visibility=View.GONE
+            optionDIV.visibility=View.GONE
 
         })
+
+        //TODO
         updateQuesBtn.setOnClickListener(View.OnClickListener {
-
+            val index = addedQuestionsCount+1
+            updateQuestion(index)
+//            Log.i("after updating question $index", test.questions[index-1].question)
+//            Log.i("after updating optionA", test.questions[index-1].option1)
+//            Log.i("after updating optionB", test.questions[index-1].option2)
+//            Log.i("after updating optionC", test.questions[index-1].option3)
+//            Log.i("after updating optionD", test.questions[index-1].option4)
         })
+
+
+
 
 //         Adding images
         questionImage.setOnClickListener(View.OnClickListener {
@@ -355,34 +381,86 @@ class AddQuestionActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
 
+    private fun updateQuestion(index: Int) {
+       if(test.questions[quesDrawerGrid.indexOfChild(tv)].question!=questionET.text.toString() ){
+           test.questions[index].question= questionET.text.toString()
+           Toast.makeText(this,"Updated successfully",Toast.LENGTH_LONG).show()
+           addQuestionLL.visibility = View.VISIBLE
+           quesGridLL.visibility = View.GONE
+           btnsInGridLL.visibility = View.GONE
+           questionIV.visibility=View.GONE
+           optionAIV.visibility=View.GONE
+           optionBIV.visibility=View.GONE
+           optionCIV.visibility=View.GONE
+           optionDIV.visibility=View.GONE
+       }
+    if(test.questions[index].option1!=optionAET.text.toString() ){
+           test.questions[index].option1= optionAET.text.toString()
 
+       }
+    if(test.questions[index].option2!=optionBET.text.toString() ){
+           test.questions[index].question= questionET.text.toString()
 
+       }
+    if(test.questions[index].option3!=optionCET.text.toString() ){
+           test.questions[index].option3= optionCET.text.toString()
 
+       }
+    if(test.questions[index].question!=questionET.text.toString() ){
+           test.questions[index].option4= optionDET.text.toString()
+
+       }
+
+    //TODO for images
     }
 
     private fun onClickEventInGrid(index: Int) {
         addQuestionLL.visibility = View.GONE
         quesGridLL.visibility = View.VISIBLE
         btnsInGridLL.visibility = View.VISIBLE
-        //TODO updatarion for images
-        Log.i("question saved", test.questions[index-1].question )
+//        Log.i("question saved", test.questions[index-1].question )
         if(question.text!=null){
             questionET.setText( test.questions[index-1].question)
+        }
+        if(test.questions[index-1].quesImgUrl!=null){
+            questionIV.visibility = View.VISIBLE
+            Log.i("images q", test.questions[index-1].quesImgUrl)
+            Picasso.get().load(test.questions[index-1].quesImgUrl).into(questionIV)
         }
         if(optionA.text!=null){
             optionAET.setText( test.questions[index-1].option1)
         }
+        if(test.questions[index-1].option1ImgUrl!=null){
+            optionAIV.visibility = View.VISIBLE
+            Log.i("images q", test.questions[index-1].option1ImgUrl)
+            Picasso.get().load(test.questions[index-1].option1ImgUrl).into(optionAIV)
+        }
         if(optionB.text!=null){
             optionBET.setText( test.questions[index-1].option2)
+        }
+        if(test.questions[index-1].option2ImgUrl!=null){
+            optionBIV.visibility = View.VISIBLE
+            Log.i("images q", test.questions[index-1].option2ImgUrl)
+            Picasso.get().load(test.questions[index-1].option2ImgUrl).into(optionBIV)
         }
         if(optionC.text!=null){
             optionCET.setText( test.questions[index-1].option3)
         }
+        if(test.questions[index-1].option3ImgUrl!=null){
+            optionCIV.visibility = View.VISIBLE
+            Log.i("images q", test.questions[index-1].option3ImgUrl)
+            Picasso.get().load(test.questions[index-1].option3ImgUrl).into(optionCIV)
+        }
         if(optionD.text!=null){
             optionDET.setText( test.questions[index-1].option4)
         }
-
+        if(test.questions[index-1].option4ImgUrl!=null){
+            optionDIV.visibility = View.VISIBLE
+            Log.i("images q", test.questions[index-1].option4ImgUrl)
+            Picasso.get().load(test.questions[index-1].option4ImgUrl).into(optionDIV)
+        }
 
     }
 
@@ -403,6 +481,13 @@ class AddQuestionActivity : AppCompatActivity() {
         optionB.text = null
         optionC.text = null
         optionD.text = null
+        questionPath= null
+        optionApath= null
+        optionBpath= null
+        optionCpath= null
+        optionDpath= null
+        optionDpath= null
+
     }
 
     private fun hideProgress() {
@@ -434,6 +519,9 @@ class AddQuestionActivity : AppCompatActivity() {
             .addOnFailureListener{
                 Toast.makeText(this,"Image -${postScript} is not uploaded",Toast.LENGTH_SHORT).show()
             }
+
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
