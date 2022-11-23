@@ -2,6 +2,7 @@ package com.sangharshAdmin.book;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.NotificationChannel;
@@ -143,6 +144,5 @@ public class MainActivity extends AppCompatActivity implements UIUpdateHomeFrag{
     public void update() {
         homeFragment.updateAdapterDataset();
     }
-
 
 }

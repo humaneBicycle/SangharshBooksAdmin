@@ -36,7 +36,6 @@ class TestActivity : AppCompatActivity() {
         testDescription = findViewById<EditText>(id.testDescription)
         timeAllowed = findViewById<EditText>(id.timeAllowed)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
-
         chooseTestBannerBtn = findViewById(R.id.chooseTestBannerBtn)
         chooseTestBannerBtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)

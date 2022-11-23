@@ -34,6 +34,7 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var   quesGridLL:LinearLayout
     lateinit var   updateQuesBtn:TextView
     lateinit var   backGridbtn:TextView
+    lateinit var   correctOptionTV:TextView
     lateinit var   questionET:EditText
     lateinit var   optionAET:EditText
     lateinit var   optionBET:EditText
@@ -44,12 +45,18 @@ class AddQuestionActivity : AppCompatActivity() {
     lateinit var   arrayOfIndex:Array<CharSequence>
     lateinit var tv : View
     lateinit var  spinner : Spinner
+   var  indexForUpdating : Int =0
     var   correctOption : Int = -2
     var  questionPath :Uri? = null
     var  optionApath :Uri? = null
     var  optionBpath :Uri? = null
     var  optionCpath :Uri? = null
     var  optionDpath :Uri? = null
+     var  updateQuestionPath :Uri? = null
+    var  updateOptionApath :Uri? = null
+    var  updateOptionBpath :Uri? = null
+    var  updateOptionCpath :Uri? = null
+    var  updateOptionDpath :Uri? = null
     var testBannerUrl:String? = null
     val PICK_IMAGE = 1
     var test = Test();
@@ -121,6 +128,7 @@ class AddQuestionActivity : AppCompatActivity() {
         optionBET = findViewById(R.id.optionBET)
         optionCET = findViewById(R.id.optionCET)
         optionDET = findViewById(R.id.optionDET)
+        correctOptionTV = findViewById(R.id.correctOptionTV)
 
 
         val items = arrayOf("A", "B", "C", "D")
@@ -162,8 +170,10 @@ class AddQuestionActivity : AppCompatActivity() {
                 tv.tag = index
                 quesDrawerGrid.addView(tv)
                 quesDrawerGrid.findViewWithTag<TextView>(index).text= index.toString()
+//                indexForUpdating = Integer.parseInt(quesDrawerGrid.findViewWithTag<TextView>(index).text.toString())-1
                  arrayOfIndex = arrayOf( quesDrawerGrid.findViewWithTag<TextView>(index).text)
                 tv.setOnClickListener(View.OnClickListener {
+//                    Log.i("adi index ", indexForUpdating.toString())
                     onClickEventInGrid(index)
                 })
 
@@ -274,13 +284,24 @@ class AddQuestionActivity : AppCompatActivity() {
             optionBIV.visibility=View.GONE
             optionCIV.visibility=View.GONE
             optionDIV.visibility=View.GONE
+            questionPath = null
+            optionApath = null
+            optionBpath = null
+            optionCpath = null
+            optionDpath = null
+            updateQuestionPath = null
+            updateOptionApath = null
+            updateOptionBpath = null
+            updateOptionCpath = null
+            updateOptionDpath = null
 
         })
 
         //TODO
         updateQuesBtn.setOnClickListener(View.OnClickListener {
-            val index = addedQuestionsCount+1
-            updateQuestion(index)
+            Log.i("adi checking index", "click question index is $indexForUpdating")
+
+            updateQuestion(indexForUpdating)
 //            Log.i("after updating question $index", test.questions[index-1].question)
 //            Log.i("after updating optionA", test.questions[index-1].option1)
 //            Log.i("after updating optionB", test.questions[index-1].option2)
@@ -356,6 +377,7 @@ class AddQuestionActivity : AppCompatActivity() {
                             shorty.title = test.testTitle;
                             shorty.numQuestion = test.questions.size
                             shorty.description = test.testDescription
+                            shorty.time = test.timeAllowed.toString()
                             directory.tests.add(shorty)
                             FirebaseFirestore.getInstance().collection("directory").document(id)
                                 .set(directory)
@@ -369,6 +391,7 @@ class AddQuestionActivity : AppCompatActivity() {
                                                newPD.dismiss()
                                                if (it.isSuccessful){
                                                    Toast.makeText(this, "Uploaded Successfully!", Toast.LENGTH_LONG).show();
+                                                   finish()
                                                }
                                            }
                                     }
@@ -384,17 +407,8 @@ class AddQuestionActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion(index: Int) {
-       if(test.questions[quesDrawerGrid.indexOfChild(tv)].question!=questionET.text.toString() ){
+       if(test.questions[index].question!=questionET.text.toString() ){
            test.questions[index].question= questionET.text.toString()
-           Toast.makeText(this,"Updated successfully",Toast.LENGTH_LONG).show()
-           addQuestionLL.visibility = View.VISIBLE
-           quesGridLL.visibility = View.GONE
-           btnsInGridLL.visibility = View.GONE
-           questionIV.visibility=View.GONE
-           optionAIV.visibility=View.GONE
-           optionBIV.visibility=View.GONE
-           optionCIV.visibility=View.GONE
-           optionDIV.visibility=View.GONE
        }
     if(test.questions[index].option1!=optionAET.text.toString() ){
            test.questions[index].option1= optionAET.text.toString()
@@ -412,11 +426,40 @@ class AddQuestionActivity : AppCompatActivity() {
            test.questions[index].option4= optionDET.text.toString()
 
        }
+        if(updateQuestionPath!= null){
+            test.questions[indexForUpdating].quesImgUrl = updateQuestionPath.toString()
+        }
+        if(updateOptionApath!= null){
+            test.questions[indexForUpdating].option1ImgUrl = updateOptionApath.toString()
+        }
+        if(updateOptionBpath!= null){
+            test.questions[indexForUpdating].option2ImgUrl = updateOptionBpath.toString()
+        }
+       if(updateOptionCpath!= null){
+            test.questions[indexForUpdating].option3ImgUrl = updateOptionCpath.toString()
+        }
+       if(updateOptionDpath!= null){
+            test.questions[indexForUpdating].option4ImgUrl = updateOptionDpath.toString()
+        }
 
-    //TODO for images
+
+
+
+        addQuestionLL.visibility = View.VISIBLE
+        quesGridLL.visibility = View.GONE
+        btnsInGridLL.visibility = View.GONE
+        questionIV.visibility=View.GONE
+        optionAIV.visibility=View.GONE
+        optionBIV.visibility=View.GONE
+        optionCIV.visibility=View.GONE
+        optionDIV.visibility=View.GONE
+        Toast.makeText(this,"Updated successfully",Toast.LENGTH_LONG).show()
+
+
     }
 
     private fun onClickEventInGrid(index: Int) {
+        indexForUpdating = index-1
         addQuestionLL.visibility = View.GONE
         quesGridLL.visibility = View.VISIBLE
         btnsInGridLL.visibility = View.VISIBLE
@@ -428,14 +471,31 @@ class AddQuestionActivity : AppCompatActivity() {
             questionIV.visibility = View.VISIBLE
             Log.i("images q", test.questions[index-1].quesImgUrl)
             Picasso.get().load(test.questions[index-1].quesImgUrl).into(questionIV)
+            questionIV.setOnClickListener(View.OnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select an image"),
+                    5
+                )
+            })
         }
         if(optionA.text!=null){
             optionAET.setText( test.questions[index-1].option1)
         }
         if(test.questions[index-1].option1ImgUrl!=null){
             optionAIV.visibility = View.VISIBLE
-            Log.i("images q", test.questions[index-1].option1ImgUrl)
             Picasso.get().load(test.questions[index-1].option1ImgUrl).into(optionAIV)
+            optionAIV.setOnClickListener(View.OnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select an image"),
+                    6
+                )
+            })
         }
         if(optionB.text!=null){
             optionBET.setText( test.questions[index-1].option2)
@@ -444,6 +504,15 @@ class AddQuestionActivity : AppCompatActivity() {
             optionBIV.visibility = View.VISIBLE
             Log.i("images q", test.questions[index-1].option2ImgUrl)
             Picasso.get().load(test.questions[index-1].option2ImgUrl).into(optionBIV)
+            optionBIV.setOnClickListener(View.OnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select an image"),
+                    7
+                )
+            })
         }
         if(optionC.text!=null){
             optionCET.setText( test.questions[index-1].option3)
@@ -452,6 +521,15 @@ class AddQuestionActivity : AppCompatActivity() {
             optionCIV.visibility = View.VISIBLE
             Log.i("images q", test.questions[index-1].option3ImgUrl)
             Picasso.get().load(test.questions[index-1].option3ImgUrl).into(optionCIV)
+            optionCIV.setOnClickListener(View.OnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select an image"),
+                    8
+                )
+            })
         }
         if(optionD.text!=null){
             optionDET.setText( test.questions[index-1].option4)
@@ -460,7 +538,33 @@ class AddQuestionActivity : AppCompatActivity() {
             optionDIV.visibility = View.VISIBLE
             Log.i("images q", test.questions[index-1].option4ImgUrl)
             Picasso.get().load(test.questions[index-1].option4ImgUrl).into(optionDIV)
+            optionDIV.setOnClickListener(View.OnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select an image"),
+                    9
+                )
+            })
         }
+        if(test.questions[index-1].correctOption ==0){
+
+            correctOptionTV.text = "Correct Option : A"
+        }
+        if(test.questions[index-1].correctOption ==1){
+
+            correctOptionTV.text ="Correct Option : B"
+        }
+        if(test.questions[index-1].correctOption ==2){
+
+            correctOptionTV.text ="Correct Option : C"
+        }
+        if(test.questions[index-1].correctOption ==3){
+
+            correctOptionTV.text ="Correct Option : D"
+        }
+
 
     }
 
@@ -564,6 +668,38 @@ class AddQuestionActivity : AppCompatActivity() {
                 .into(optionDImage)
             isOptionDImageSelected =true
         }
+        if (requestCode == 5 && resultCode == RESULT_OK && data != null){
+             updateQuestionPath= data.data!!
+            Picasso.get()
+                .load(data.data)
+                .into(questionIV)
+        }
+        if (requestCode == 6 && resultCode == RESULT_OK && data != null){
+            updateOptionApath = data.data!!
+            Picasso.get()
+                .load(data.data)
+                .into(optionAIV)
+        }
+        if (requestCode == 7 && resultCode == RESULT_OK && data != null){
+            updateOptionBpath = data.data!!
+            Picasso.get()
+                .load(data.data)
+                .into(optionBIV)
+            isOptionDImageSelected =true
+        }
+        if (requestCode == 8 && resultCode == RESULT_OK && data != null){
+            updateOptionCpath = data.data!!
+            Picasso.get()
+                .load(data.data)
+                .into(optionCIV)
+        }
+        if (requestCode == 9 && resultCode == RESULT_OK && data != null){
+            updateOptionDpath = data.data!!
+            Picasso.get()
+                .load(data.data)
+                .into(optionDIV)
+        }
+
 
     }
 

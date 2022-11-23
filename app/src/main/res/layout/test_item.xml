@@ -6,6 +6,7 @@
     app:cardCornerRadius="16dp"
     android:id="@+id/background_file_item"
     android:layout_marginTop="2dp"
+    android:layout_marginHorizontal="5dp"
     android:padding="4dp">
 
     <LinearLayout
