@@ -1,25 +1,30 @@
 package com.sangharshAdmin.book.fragments;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.auth.FirebaseAuth;
+import com.sangharshAdmin.book.LoginActivity;
 import com.sangharshAdmin.book.R;
 import com.sangharshAdmin.book.SangharshBooks;
 
 public class ProfileFragment extends Fragment {
 
     SwitchMaterial switchMaterial;
-    TextView aboutUs;
+    TextView aboutUs,emailAuth,logout;
     TextView privacyPolicy;
     SangharshBooks sangharshBooks;
 
@@ -61,6 +66,22 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getContext(), "Signed Out Successfully!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(),LoginActivity.class));
+            }
+        });
+        try{
+            emailAuth.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        }catch(Exception e){
+            Log.i("sba", "email not provided!: "+e.toString());
+            emailAuth.setText("EMAIL NOT PROVIDED ERROR");
+
+        }
+
         privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,5 +103,7 @@ public class ProfileFragment extends Fragment {
         switchMaterial = view.findViewById(R.id.active_mode_theme);
         aboutUs = view.findViewById(R.id.about_us);
         privacyPolicy = view.findViewById(R.id.privacy_policy);
+        emailAuth=view.findViewById(R.id.auth_email);
+        logout = view.findViewById(R.id.logout);
     }
 }

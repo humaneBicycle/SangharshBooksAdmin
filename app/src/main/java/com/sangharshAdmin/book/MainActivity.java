@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.sangharshAdmin.book.adapter.AddDirectoryBottomSheetAdapter;
 import com.sangharshAdmin.book.adapter.ViewPagerAdapter;
 import com.sangharshAdmin.book.fragments.BookmarksFragment;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements UIUpdateHomeFrag{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sangharshBooks = (SangharshBooks) getApplication();
+        if(FirebaseAuth.getInstance().getCurrentUser()==null){
+            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+        }
 
         //startActivity(new Intent(MainActivity.this, BannerAddActivity.class));
 
