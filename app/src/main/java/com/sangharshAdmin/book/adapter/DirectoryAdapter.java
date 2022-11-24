@@ -38,6 +38,7 @@ import com.google.android.datatransport.BuildConfig;
 import com.google.gson.Gson;
 import com.sangharshAdmin.book.EditTestActivity;
 import com.sangharshAdmin.book.FileActivity;
+import com.sangharshAdmin.book.LongClickOptionsTest;
 import com.sangharshAdmin.book.PDFDisplay;
 import com.sangharshAdmin.book.R;
 import com.sangharshAdmin.book.SangharshBooks;
@@ -493,6 +494,16 @@ public class DirectoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 Intent i = new Intent(context, EditTestActivity.class);
                 i.putExtra("Test", new Gson().toJson(directory.getTests().get(index)));
                 context.startActivity(i);
+            });
+            testHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    LongClickOptionsTest longClickOptionsTest = new LongClickOptionsTest(context,directory.getTests().get(index),DirectoryAdapter.this,index,directory.getTests(),sangharshBooks);
+                    FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                    longClickOptionsTest.show(manager,"longClickDeleteTest");
+                    return true;
+
+                }
             });
         }
     }
