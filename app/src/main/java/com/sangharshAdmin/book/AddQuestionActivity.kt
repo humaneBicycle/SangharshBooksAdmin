@@ -78,8 +78,10 @@ class AddQuestionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_question)
         sangharshBooks = application as SangharshBooks
-
-
+        if (intent.getBooleanExtra("isPaid",false)){
+            test.isPaid = true
+            test.price = intent.getIntExtra("price", 0)
+        }
         val testId = FirebaseFirestore.getInstance()
             .collection("directory")
             .document()
@@ -373,6 +375,10 @@ class AddQuestionActivity : AppCompatActivity() {
                             val id = it.result.documents[0].id
                             val directory = it.result.toObjects(Directory::class.java)[0]
                             val shorty = ShortTest()
+                            if (intent.getBooleanExtra("isPaid",false)){
+                                shorty.isPaid = true
+                                shorty.price = intent.getIntExtra("price", 0)
+                            }
                             shorty.id = test.id;
                             shorty.title = test.testTitle;
                             shorty.numQuestion = test.questions.size

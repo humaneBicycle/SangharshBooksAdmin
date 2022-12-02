@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#191919"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -20,42 +21,32 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent">
-
-
-
         <TextView
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
-            android:layout_weight="3"
-            android:text="Login"
+            android:text="Admin Panel"
+            android:fontFamily="@font/poppinsbold"
             android:textColor="@color/white"
             android:textSize="28sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="48dp"
+        android:padding="16dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
         <EditText
+            android:background="#80878787"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:padding="24dp"
+            android:fontFamily="@font/poppinsregular"
+            android:padding="16dp"
             android:textColorHint="@color/white"
             android:textColor="@color/white"
             android:id="@+id/email_login_activity"
@@ -66,33 +57,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/password_login"
+            android:background="#80878787"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppinsregular"
             android:hint="Password"
-            android:padding="24dp"
+            android:padding="16dp"
             android:inputType="textPassword"
             android:textColorHint="@color/white"
             android:textColor="@color/white"/>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="56dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/img_email_login_next"
+        <LinearLayout
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="4dp"
-            android:textAlignment="center"
-            android:padding="8dp"
-            android:text="Login"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/img_email_login_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:padding="16dp"
+                android:background="@color/redBtnBg"
+                android:text="Login"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppinsbold"
+                />
 
 
+        </LinearLayout>
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

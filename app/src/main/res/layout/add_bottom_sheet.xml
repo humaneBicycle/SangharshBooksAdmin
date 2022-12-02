@@ -121,6 +121,23 @@
             android:id="@+id/add_pdf_local_storage"
             android:textSize="18sp"
             android:visibility="gone"/>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/isPaidSwitch"
+                android:fontFamily="@font/poppinsregular"
+                android:text="Premium"
+                android:checked="false" />
+
+            <EditText
+                android:hint="Price (in Coins)"
+                android:inputType="number"
+                android:visibility="gone"
+                android:fontFamily="@font/poppinsregular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/priceET" />
         <SeekBar
             android:id="@+id/upload_progress"
             android:layout_width="0dp"

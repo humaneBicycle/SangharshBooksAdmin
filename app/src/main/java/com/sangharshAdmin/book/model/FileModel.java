@@ -11,6 +11,22 @@ public class FileModel {
         this.pointingDirId = pointingDirId;
     }
 
+    boolean isPaid;
+    int price;
+    public boolean isPaid(){
+        return isPaid;
+    }
+    public int getPrice() {
+        return price;
+    }
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }

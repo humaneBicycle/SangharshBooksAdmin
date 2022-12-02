@@ -15,7 +15,21 @@ public class PDFModel {
     public void setBookMarked(boolean bookMarked) {
         isBookMarked = bookMarked;
     }
+    boolean isPaid;
+    int price;
+    public boolean isPaid(){
+        return isPaid;
+    }
+    public int getPrice() {
+        return price;
+    }
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
     public PDFModel (){}
 
     public PDFModel(boolean isOfflineAvailable, String url, String offlinePath, String name,String pointingDir,boolean isBookMarked) {

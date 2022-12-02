@@ -2,18 +2,14 @@ package com.sangharshAdmin.book
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.Toast
-import com.google.firebase.ktx.Firebase
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.storage.FirebaseStorage
-import com.sangharshAdmin.book.R.*
+import com.sangharshAdmin.book.R.id
+import com.sangharshAdmin.book.R.layout
 import com.squareup.picasso.Picasso
 
 class TestActivity : AppCompatActivity() {
@@ -28,6 +24,10 @@ class TestActivity : AppCompatActivity() {
     var  testBannerImg : Uri? = null
     var testBannerURL:Uri? = null
     lateinit var testTitleTxt:String
+
+
+    lateinit var isPaidSwitch: Switch
+    lateinit var priceEt: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_test)
@@ -37,6 +37,16 @@ class TestActivity : AppCompatActivity() {
         timeAllowed = findViewById<EditText>(id.timeAllowed)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
         chooseTestBannerBtn = findViewById(R.id.chooseTestBannerBtn)
+        isPaidSwitch = findViewById<Switch>(id.isPaidSwitch)
+        priceEt = findViewById<EditText>(id.priceET)
+
+        isPaidSwitch.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                priceEt.visibility = View.VISIBLE
+            } else {
+                priceEt.visibility = View.GONE
+            }
+        }
         chooseTestBannerBtn.setOnClickListener(View.OnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
@@ -51,7 +61,13 @@ class TestActivity : AppCompatActivity() {
         Log.i("banner fo if", testBannerImg.toString())
 
         createTestBtn.setOnClickListener(View.OnClickListener {
-            if(!testTitle.text.isEmpty() && !testDescription.text.isEmpty()&& !timeAllowed.text.isEmpty() && testBannerImg!= null) {
+            if (isPaidSwitch.isChecked && priceEt.text.toString().isEmpty()) {
+                priceEt.error = "This is required"
+                return@OnClickListener
+            } else {
+                priceEt.error = null
+            }
+            if(testTitle.text.isNotEmpty() && !testDescription.text.isEmpty()&& !timeAllowed.text.isEmpty() && testBannerImg!= null) {
                 uploadTestWithImage()
                 Log.i("adi", "uploading test with image")
             }
@@ -74,6 +90,10 @@ class TestActivity : AppCompatActivity() {
         intent.putExtra("title",title)
         intent.putExtra("description",testDescription)
         intent.putExtra("timer",timeAllowed)
+        if (isPaidSwitch.isChecked){
+            intent.putExtra("isPaid", isPaidSwitch.isChecked)
+            intent.putExtra("price", Integer.valueOf(priceEt.text.toString()))
+        }
         startActivity(intent)
     }
 
@@ -94,6 +114,10 @@ class TestActivity : AppCompatActivity() {
                     intent.putExtra("description",testDescription)
                     intent.putExtra("timer",timeAllowed)
                     intent.putExtra("testBannerUrl",testBannerURL.toString())
+                    if (isPaidSwitch.isChecked){
+                        intent.putExtra("isPaid", isPaidSwitch.isChecked)
+                        intent.putExtra("price", Integer.valueOf(priceEt.text.toString()))
+                    }
                     startActivity(intent)
                     progressBar.visibility = View.GONE
                     Log.i("testbanner", "url generated successfully $testBannerURL ")

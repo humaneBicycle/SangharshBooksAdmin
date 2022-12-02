@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,9 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
     private StorageReference storageReference;
     ProgressDialog progressDialog;
 
+    Switch isPaidSwitch;
+    EditText priceEt;
+
     public AddDirectoryBottomSheetAdapter(Context context, SangharshBooks sangharshBooks, Activity activity, DirectoryChangeListener callback){
         this.context = context;
         this.sangharshBooks = sangharshBooks;
@@ -86,6 +91,8 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
         btSelect = v.findViewById(R.id.add_pdf_local_storage);
 //        seekBar = v.findViewById(R.id.upload_progress);
         progressDialog = new ProgressDialog(activity);
+        isPaidSwitch = v.findViewById(R.id.isPaidSwitch);
+        priceEt = v.findViewById(R.id.priceET);
 
 //        String[] items = new String[]{"Parent Directory","Any Other Directory"};
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item,items);
@@ -140,9 +147,27 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
             }
         });
 
+        isPaidSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    priceEt.setVisibility(View.VISIBLE);
+                } else {
+                    priceEt.setVisibility(View.GONE);
+                }
+            }
+        });
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (isPaidSwitch.isChecked() && priceEt.getText().toString().isEmpty()){
+                    priceEt.setError("This is required");
+                    return;
+                } else {
+                    priceEt.setError(null);
+                }
                 if(typeSpinner.getSelectedItem().equals("File")){
                     if(!fileName.getText().toString().equals("") && fileName.getText()!=null){
 
@@ -153,7 +178,10 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
                                     if(!task.getResult().isEmpty()) {
                                         directory = task.getResult().toObjects(Directory.class).get(0);
                                         FileModel fileModel = new FileModel(fileName.getText().toString(),sangharshBooks.getPath()+"\\"+fileName.getText().toString());
-
+                                        if (isPaidSwitch.isChecked()){
+                                            fileModel.setPaid(isPaidSwitch.isChecked());
+                                            fileModel.setPrice(Integer.valueOf(priceEt.getText().toString()));
+                                        }
                                         String id = task.getResult().getDocuments().get(0).getId();
                                         boolean b=false;
                                         for(int i =0;i<directory.getFiles().size();i++){
@@ -255,6 +283,10 @@ public class AddDirectoryBottomSheetAdapter extends BottomSheetDialogFragment {
                                                     Log.d("sba download url", "onComplete: "+url);
 //                                                    String url = task.getResult().getUploadSessionUri().toString();
                                                     PDFModel pdfModel = new PDFModel(false,url,"",pdfName.getText().toString(),sangharshBooks.getPath()+"\\"+pdfName.getText().toString(),false);
+                                                    if (isPaidSwitch.isChecked()){
+                                                        pdfModel.setPaid(isPaidSwitch.isChecked());
+                                                        pdfModel.setPrice(Integer.valueOf(priceEt.getText().toString()));
+                                                    }
                                                     directory.getPdfModels().add(pdfModel);
                                                     FirebaseFirestore.getInstance().collection("directory").document(id).set(directory).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
