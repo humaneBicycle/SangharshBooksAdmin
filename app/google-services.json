@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "887077090310",
-    "project_id": "sangharsh-test",
-    "storage_bucket": "sangharsh-test.appspot.com"
+    "project_number": "772682726712",
+    "project_id": "ssc-mts-questions-and-quiz",
+    "storage_bucket": "ssc-mts-questions-and-quiz.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:887077090310:android:dd4e3387102b720eeebf87",
+        "mobilesdk_app_id": "1:772682726712:android:995ae3e16212fdff24d5cd",
         "android_client_info": {
-          "package_name": "com.sangharshbooks.test"
+          "package_name": "com.sangharsh.ssc.mts"
         }
       },
       "oauth_client": [
         {
-          "client_id": "887077090310-9jjjaoco55er4ps5m7n579phbaf70pib.apps.googleusercontent.com",
+          "client_id": "772682726712-riod6s8u00m2udlvof8mer6m7u5ppetu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sangharsh.ssc.mts",
+            "certificate_hash": "024ae90a7a50aa81262019ef1f421c7d3b210411"
+          }
+        },
+        {
+          "client_id": "772682726712-gdvb744o8bncvudnuljaiq8lvbnc3be0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBQMy634vD84RT6vyjzLQWJPnKWp0v7lUo"
+          "current_key": "AIzaSyBejOn-2GADPh0JPlxN3Mrk3XNmPIwGlno"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "887077090310-9jjjaoco55er4ps5m7n579phbaf70pib.apps.googleusercontent.com",
+              "client_id": "772682726712-gdvb744o8bncvudnuljaiq8lvbnc3be0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -36,27 +44,35 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:887077090310:android:93f09e39fa2f2b7deebf87",
+        "mobilesdk_app_id": "1:772682726712:android:cdf033d62cd0ebff24d5cd",
         "android_client_info": {
-          "package_name": "com.sangharshbooks.test.admin"
+          "package_name": "com.sangharshbooks.mts.admin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "887077090310-9jjjaoco55er4ps5m7n579phbaf70pib.apps.googleusercontent.com",
+          "client_id": "772682726712-c5dg47vkq8bmb3t1uik6f6113q0dm2gs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sangharshbooks.mts.admin",
+            "certificate_hash": "024ae90a7a50aa81262019ef1f421c7d3b210411"
+          }
+        },
+        {
+          "client_id": "772682726712-gdvb744o8bncvudnuljaiq8lvbnc3be0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBQMy634vD84RT6vyjzLQWJPnKWp0v7lUo"
+          "current_key": "AIzaSyBejOn-2GADPh0JPlxN3Mrk3XNmPIwGlno"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "887077090310-9jjjaoco55er4ps5m7n579phbaf70pib.apps.googleusercontent.com",
+              "client_id": "772682726712-gdvb744o8bncvudnuljaiq8lvbnc3be0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
